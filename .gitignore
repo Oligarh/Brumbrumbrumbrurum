@@ -18,3 +18,17 @@ local.properties
 # Eclipse project files
 .classpath
 .project
+
+#IntelliJ IDEA
+.idea
+*.iml
+/.idea
+
+#Other
+.gradle
+*~
+*.DS_Store
+*.class
+*.checkstyle
+/.classpath
+/.project
