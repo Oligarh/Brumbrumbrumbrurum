@@ -22,7 +22,10 @@ local.properties
 #IntelliJ IDEA
 .idea
 *.iml
+<<<<<<< HEAD
 /.idea
+=======
+>>>>>>> 58b5396ea373a7e19e05170e3d81c092c9359e09
 
 #Other
 .gradle
@@ -31,4 +34,10 @@ local.properties
 *.class
 *.checkstyle
 /.classpath
+<<<<<<< HEAD
 /.project
+=======
+/.project
+/.idea
+/*
+>>>>>>> 58b5396ea373a7e19e05170e3d81c092c9359e09
