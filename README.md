@@ -1,4 +1,0 @@
-Helicopter
-==========
-
-description
