@@ -9,7 +9,10 @@ import com.lugar.steelbird.mathengine.ammunitions.FlyingObject;
 import com.lugar.steelbird.mathengine.bots.Tank;
 import com.lugar.steelbird.mathengine.statics.StaticObject;
 import org.andengine.engine.camera.Camera;
-import org.andengine.entity.scene.Scene;
+import org.andengine.entity.scene.*;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.input.touch.TouchEvent;
+import org.andengine.util.math.MathUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -74,8 +77,12 @@ public class MathEngine implements Runnable {
             mSceneBackground.attachChild(staticObject.getSprite());
         }
 
+        UIScene scene = new UIScene(mCamera);
+        scene.setBackgroundEnabled(false);
+
         mSceneHO = new Scene();
         mSceneHO.setBackgroundEnabled(false);
+        mSceneHO.setChildScene(scene);
 
         mSceneMO = new Scene();
         mSceneMO.setBackgroundEnabled(false);
@@ -92,8 +99,97 @@ public class MathEngine implements Runnable {
 
         mCriticalDistance = mHelicopter.getMainSprite().getWidthScaled() * 0.3f;
 
-        addArmedMovingObject(new Tank(new PointF(Config.CAMERA_WIDTH * 0.1f, Config.CAMERA_HEIGHT * 0.1f),
-                mResourceManager, mHelicopter));
+        final Sprite moveSprite = new Sprite(
+                0 - mResourceManager.getJoystik().getWidth() / 2 +
+                        mResourceManager.getJoystik().getWidth() / 2 * Config.SCALE,
+                Config.CAMERA_HEIGHT -
+                        mResourceManager.getJoystik().getHeight() / 2 -
+                        mResourceManager.getJoystik().getHeight() / 2 * Config.SCALE,
+                mResourceManager.getJoystik(),
+                mResourceManager.getVertexBufferObjectManager()) {
+            boolean mGrabbed = false;
+
+            @Override
+            public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+                switch(pSceneTouchEvent.getAction()) {
+                    case TouchEvent.ACTION_DOWN:
+                        this.mGrabbed = true;
+                        break;
+                    case TouchEvent.ACTION_MOVE:
+                        if(this.mGrabbed) {
+//                            if (pSceneTouchEvent.getX() < getWidthScaled() && pSceneTouchEvent.getY() < getHeightScaled()) {
+                                final float offsetX = getWidthScaled() / 2 - pSceneTouchEvent.getX();
+                                final float offsetY = Config.CAMERA_HEIGHT - getHeightScaled() / 2 -
+                                        pSceneTouchEvent.getY();
+                                mHelicopter.setNextPoint(
+                                        new PointF(mHelicopter.posX() - Config.CAMERA_WIDTH * offsetX,
+                                                mHelicopter.posY() - Config.CAMERA_WIDTH * offsetY));
+//                            } else {
+//                                mHelicopter.setNextPoint(mHelicopter.getPoint());
+//                                this.mGrabbed = false;
+//                            }
+                        }
+                        break;
+                    case TouchEvent.ACTION_UP:
+                        if(this.mGrabbed) {
+                            mHelicopter.setNextPoint(mHelicopter.getPoint());
+                            this.mGrabbed = false;
+                        }
+                        break;
+                }
+                return true;
+            }
+        };
+        moveSprite.setScale(Config.SCALE);
+
+        final Sprite rotateSprite = new Sprite(
+                Config.CAMERA_WIDTH - mResourceManager.getJoystik().getWidth() / 2 -
+                        mResourceManager.getJoystik().getWidth() / 2 * Config.SCALE,
+                Config.CAMERA_HEIGHT -
+                        mResourceManager.getJoystik().getHeight() / 2 -
+                        mResourceManager.getJoystik().getHeight() / 2 * Config.SCALE,
+                mResourceManager.getJoystik(),
+                mResourceManager.getVertexBufferObjectManager()) {
+            boolean mGrabbed = false;
+
+            @Override
+            public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+                switch(pSceneTouchEvent.getAction()) {
+                    case TouchEvent.ACTION_DOWN:
+                        this.mGrabbed = true;
+                        break;
+                    case TouchEvent.ACTION_MOVE:
+                        if(this.mGrabbed) {
+                            final float directionX = Config.CAMERA_WIDTH - getWidthScaled() / 2 - pSceneTouchEvent.getX();
+                            final float directionY = Config.CAMERA_HEIGHT - getHeightScaled() / 2 - pSceneTouchEvent.getY();
+                            final float rotationAngle = MathUtils.atan2(directionY, directionX);
+                            mHelicopter.setAngle(MathUtils.radToDeg(rotationAngle) - 90);
+                        }
+                        break;
+                    case TouchEvent.ACTION_UP:
+                        if(this.mGrabbed) {
+                            mHelicopter.setNextPoint(mHelicopter.getPoint());
+                            this.mGrabbed = false;
+                        }
+                        break;
+                }
+                return true;
+            }
+        };
+        rotateSprite.setScale(Config.SCALE);
+
+        scene.attachChild(moveSprite);
+        scene.attachChild(rotateSprite);
+        scene.registerTouchArea(moveSprite);
+        scene.registerTouchArea(rotateSprite);
+
+        scene.setOnSceneTouchListener(new IOnSceneTouchListener() {
+            @Override
+            public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+                mHelicopter.setNextPoint(mHelicopter.getPoint());
+                return true;
+            }
+        });
 
         addHeroObject(mHelicopter);
     }
@@ -283,6 +379,14 @@ public class MathEngine implements Runnable {
         mHelicopter.setY(mHelicopter.posY() - distance);
 //        mHelicopter.getMainSprite().setPosition(mHelicopter.getMainSprite().getX(),
 //                mHelicopter.getMainSprite().getY() - distance);
+    }
+
+    class UIScene extends CameraScene {
+
+        UIScene(Camera pCamera) {
+            super(pCamera);
+        }
+
     }
 
 

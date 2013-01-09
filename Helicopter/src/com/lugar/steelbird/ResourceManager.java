@@ -26,6 +26,8 @@ public class ResourceManager {
 
     private TextureRegion mBackGround;
 
+    private TextureRegion mJoystik;
+
     private VertexBufferObjectManager mVertexBufferObjectManager;
 
     public ResourceManager(BaseGameActivity baseGameActivity) {
@@ -41,6 +43,7 @@ public class ResourceManager {
         BitmapTextureAtlas explosionTextureAtlas = new BitmapTextureAtlas(textureManager, 1024, 768);
         BitmapTextureAtlas tankTextureAtlas = new BitmapTextureAtlas(textureManager, 162, 197);
         BitmapTextureAtlas backgroundTextureAtlas = new BitmapTextureAtlas(textureManager, 1280, 800);
+        BitmapTextureAtlas joystikTextureAtlas = new BitmapTextureAtlas(textureManager, 352, 352);
 
         mHelicopterBody = BitmapTextureAtlasTextureRegionFactory.createFromAsset(helicopterTextureAtlas,
                 baseGameActivity, "helicopter_body.png", 0, 0);
@@ -72,6 +75,9 @@ public class ResourceManager {
         mBackGround = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas,
                 baseGameActivity, "background_big.jpg", 0, 0);
 
+        mJoystik= BitmapTextureAtlasTextureRegionFactory.createFromAsset(joystikTextureAtlas,
+                baseGameActivity, "joystik.png", 0, 0);
+
         helicopterTextureAtlas.load();
         bombTextureAtlas.load();
         bulletTextureAtlas.load();
@@ -79,6 +85,7 @@ public class ResourceManager {
         explosionTextureAtlas.load();
         tankTextureAtlas.load();
         backgroundTextureAtlas.load();
+        joystikTextureAtlas.load();
     }
 
     public TextureRegion getHelicopterBody() {
@@ -123,5 +130,9 @@ public class ResourceManager {
 
     public VertexBufferObjectManager getVertexBufferObjectManager() {
         return mVertexBufferObjectManager;
+    }
+
+    public TextureRegion getJoystik() {
+        return mJoystik;
     }
 }

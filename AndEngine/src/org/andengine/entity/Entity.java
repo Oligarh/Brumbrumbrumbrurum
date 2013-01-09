@@ -1363,12 +1363,14 @@ public class Entity implements IEntity {
 
 				{ /* Draw children behind this Entity. */
 					for(; i < childCount; i++) {
-						final IEntity child = children.get(i);
-						if(child.getZIndex() < 0) {
-							child.onDraw(pGLState, pCamera);
-						} else {
-							break;
-						}
+                        if (i < mChildren.size()) {
+                            final IEntity child = children.get(i);
+                            if(child.getZIndex() < 0) {
+                                child.onDraw(pGLState, pCamera);
+                            } else {
+                                break;
+                            }
+                        }
 					}
 				}
 
