@@ -1,7 +1,14 @@
 package com.lugar.steelbird;
 
 import android.view.Display;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
 import com.lugar.steelbird.mathengine.MathEngine;
+import com.lugar.steelbird.ui.widjets.ControlImageView;
+import com.lugar.steelbird.ui.widjets.RotateControl;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -30,7 +37,7 @@ public class GameActivity extends BaseGameActivity {
 
         final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED,
                 new RatioResolutionPolicy(Config.CAMERA_WIDTH, Config.CAMERA_HEIGHT), mCamera);
-//        engineOptions.getTouchOptions().setNeedsMultiTouch(true);
+        engineOptions.getTouchOptions().setNeedsMultiTouch(true);
 
         return engineOptions;
     }
@@ -54,9 +61,21 @@ public class GameActivity extends BaseGameActivity {
         mMathEngine = new MathEngine(this);
         mMathEngine.start();
 
-//        mEngine.setTouchController(new MultiTouchController());
+        final View view = getLayoutInflater().inflate(R.layout.ui_layout, null);
+        final ControlImageView joystikMove = (ControlImageView) view.findViewById(R.id.joystik_move);
+        final RotateControl joystikAngle = (RotateControl) view.findViewById(R.id.joystik_angle);
 
-//        new OnScreenControlHandler(this, mMathEngine.getHelicopter(), mResourceManager);
+        joystikMove.setHelicopter(mMathEngine.getHelicopter());
+
+        joystikAngle.setHelicopter(mMathEngine.getHelicopter());
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                addContentView(view, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+            }
+        });
 
         pOnCreateSceneCallback.onCreateSceneFinished(mScene);
     }

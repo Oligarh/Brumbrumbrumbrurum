@@ -38,6 +38,18 @@ public class Helicopter extends ArmedMovingObject {
     @Override
     public void tact(long now, long period) {
         updateAngle();
+
+        if (distance(mPoint.x, mPoint.y, mNextPoint.x, mNextPoint.y) > 10) {
+            float distance = (float) period / 1000 * mSpeed;
+            float nextStep = distance(mPoint.x, mPoint.y, mNextPoint.x, mNextPoint.y);
+            float m = nextStep - distance;
+            float x = (m * mPoint.x + distance * mNextPoint.x) / nextStep;
+            float y = (m * mPoint.y + distance * mNextPoint.y) / nextStep;
+
+            mPoint.x = x;
+            mPoint.y = y;
+        }
+
         mMainSprite.setPosition(mPoint.x - mPointOffset.x, mPoint.y - mPointOffset.y);
 //        mPoint.x = mMainSprite.getX() + mPointOffset.x;
 //        mPoint.y = mMainSprite.getY() + mPointOffset.y;
@@ -57,6 +69,18 @@ public class Helicopter extends ArmedMovingObject {
         }
         mLastShoot = now;
         return flyingObjects;
+    }
+
+    public PointF getPoint() {
+        return mPoint;
+    }
+
+    public void setNextPoint(PointF point) {
+        mNextPoint = point;
+    }
+
+    public void setAngle(float angle) {
+        mAngle = angle;
     }
 
     private void updateAngle() {
