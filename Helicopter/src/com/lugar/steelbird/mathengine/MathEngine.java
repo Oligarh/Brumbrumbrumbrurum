@@ -38,6 +38,8 @@ public class MathEngine implements Runnable {
 
     private Helicopter mHelicopter;
 
+    private GameActivity mGameActivity;
+
     private final List<ArmedMovingObject> mArmedMovingObjects = new ArrayList<ArmedMovingObject>();
     private final List<FlyingObject> mFlyingObjects = new ArrayList<FlyingObject>();
     private final List<FlyingObject> mBotFlyingObjects = new ArrayList<FlyingObject>();
@@ -45,6 +47,7 @@ public class MathEngine implements Runnable {
 
     public MathEngine(GameActivity gameActivity) {
 
+        mGameActivity = gameActivity;
         mResourceManager = gameActivity.getResourceManager();
 
         mCamera = gameActivity.getCamera();
@@ -80,8 +83,6 @@ public class MathEngine implements Runnable {
 
         mSceneHO = new Scene();
         mSceneHO.setBackgroundEnabled(false);
-//        mSceneHO.attachChild(new UIHandler(mCamera, mHelicopter, mResourceManager.getJoystick(),
-//                mResourceManager.getVertexBufferObjectManager()));
         mSceneHO.setChildScene(new UIHandler(mCamera, mHelicopter, mResourceManager.getJoystick(),
                 mResourceManager.getVertexBufferObjectManager(), gameActivity.getFpsCounter(),
                 mResourceManager.getFont()));
@@ -147,7 +148,7 @@ public class MathEngine implements Runnable {
         }
     }
 
-    public synchronized void tact(long time) {
+    public void tact(long time) {
 
         final long now = System.currentTimeMillis();
 
@@ -239,28 +240,38 @@ public class MathEngine implements Runnable {
         mSceneHO.attachChild(object.getMainSprite());
     }
 
-    public synchronized void addArmedMovingObject(ArmedMovingObject object) {
+    public void addArmedMovingObject(ArmedMovingObject object) {
         mArmedMovingObjects.add(object);
         mSceneMO.attachChild(object.getMainSprite());
     }
 
-    public synchronized void removeArmedMovingObject(ArmedMovingObject object, Iterator iterator) {
-        mSceneMO.detachChild(object.getMainSprite());
+    public void removeArmedMovingObject(final ArmedMovingObject object, Iterator iterator) {
+        mGameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mSceneMO.detachChild(object.getMainSprite());
+            }
+        });
         iterator.remove();
     }
 
-    public synchronized void addHelicopterFlyingObject(FlyingObject object) {
+    public void addHelicopterFlyingObject(FlyingObject object) {
         mFlyingObjects.add(object);
         mSceneFO.attachChild(object.getMainSprite());
     }
 
-    public synchronized void addBotFlyingObject(FlyingObject object) {
+    public void addBotFlyingObject(FlyingObject object) {
         mBotFlyingObjects.add(object);
         mSceneFO.attachChild(object.getMainSprite());
     }
 
-    public synchronized void removeFlyingObject(FlyingObject object, Iterator iterator) {
-        mSceneFO.detachChild(object.getMainSprite());
+    public void removeFlyingObject(final FlyingObject object, Iterator iterator) {
+        mGameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mSceneFO.detachChild(object.getMainSprite());
+            }
+        });
         iterator.remove();
     }
 
@@ -284,7 +295,5 @@ public class MathEngine implements Runnable {
         mCamera.setCenter(mCamera.getCenterX(), mCamera.getCenterY() - distance);
 
         mHelicopter.setY(mHelicopter.posY() - distance);
-//        mHelicopter.getMainSprite().setPosition(mHelicopter.getMainSprite().getX(),
-//                mHelicopter.getMainSprite().getY() - distance);
     }
 }
