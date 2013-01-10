@@ -5,19 +5,21 @@ import android.os.Parcelable;
 
 public class Item implements Parcelable {
 
-    private int mPointX;
-    private int mPointY;
-    private int mNextPointX;
-    private int mNextPointY;
+    private String mType;
+    private float mPointX;
+    private float mPointY;
+    private float mNextPointX;
+    private float mNextPointY;
 
     public Item() {
     }
 
     private Item(Parcel in) {
-        mPointX = in.readInt();
-        mPointY = in.readInt();
-        mNextPointX = in.readInt();
-        mNextPointY = in.readInt();
+        mType = in.readString();
+        mPointX = in.readFloat();
+        mPointY = in.readFloat();
+        mNextPointX = in.readFloat();
+        mNextPointY = in.readFloat();
     }
 
     @Override
@@ -27,10 +29,11 @@ public class Item implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(mPointX);
-        parcel.writeInt(mPointY);
-        parcel.writeInt(mNextPointX);
-        parcel.writeInt(mNextPointY);
+        parcel.writeString(mType);
+        parcel.writeFloat(mPointX);
+        parcel.writeFloat(mPointY);
+        parcel.writeFloat(mNextPointX);
+        parcel.writeFloat(mNextPointY);
     }
 
     public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
@@ -46,35 +49,43 @@ public class Item implements Parcelable {
         }
     };
 
-    public int getPointX() {
+    public String getType() {
+        return mType;
+    }
+
+    public void setType(String mType) {
+        this.mType = mType;
+    }
+
+    public float getPointX() {
         return mPointX;
     }
 
-    public void setPointX(int pointX) {
-        mPointX = pointX;
+    public void setPointX(float mPointX) {
+        this.mPointX = mPointX;
     }
 
-    public int getNextPointX() {
-        return mNextPointX;
-    }
-
-    public void setNextPointX(int nextPointX) {
-        mNextPointX = nextPointX;
-    }
-
-    public int getPointY() {
+    public float getPointY() {
         return mPointY;
     }
 
-    public void setPointY(int pointY) {
-        mPointY = pointY;
+    public void setPointY(float mPointY) {
+        this.mPointY = mPointY;
     }
 
-    public int getNextPointY() {
+    public float getNextPointX() {
+        return mNextPointX;
+    }
+
+    public void setNextPointX(float mNextPointX) {
+        this.mNextPointX = mNextPointX;
+    }
+
+    public float getNextPointY() {
         return mNextPointY;
     }
 
-    public void setNextPointY(int nextPointY) {
-        mNextPointY = nextPointY;
+    public void setNextPointY(float mNextPointY) {
+        this.mNextPointY = mNextPointY;
     }
 }

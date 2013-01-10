@@ -5,15 +5,15 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-public class Bot implements Parcelable {
+public class SceneObject implements Parcelable {
 
     private String mType;
     private ArrayList<Item> mItems;
 
-    public Bot() {
+    public SceneObject() {
     }
 
-    private Bot(Parcel in) {
+    private SceneObject(Parcel in) {
         mType = in.readString();
         mItems = in.readArrayList(Item.class.getClassLoader());
     }
@@ -29,22 +29,22 @@ public class Bot implements Parcelable {
         parcel.writeList(mItems);
     }
 
-    public static final Parcelable.Creator<Bot> CREATOR = new Parcelable.Creator<Bot>() {
+    public static final Parcelable.Creator<SceneObject> CREATOR = new Parcelable.Creator<SceneObject>() {
 
         @Override
-        public Bot createFromParcel(Parcel source) {
-            return new Bot(source);
+        public SceneObject createFromParcel(Parcel source) {
+            return new SceneObject(source);
         }
 
         @Override
-        public Bot[] newArray(int size) {
-            return new Bot[size];
+        public SceneObject[] newArray(int size) {
+            return new SceneObject[size];
         }
     };
 
     public void addItem(Item item) {
         if (mItems == null) {
-            mItems = new ArrayList<>();
+            mItems = new ArrayList<Item>();
         }
         mItems.add(item);
     }

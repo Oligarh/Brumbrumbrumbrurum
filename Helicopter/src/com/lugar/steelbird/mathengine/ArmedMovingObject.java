@@ -23,6 +23,7 @@ public abstract class ArmedMovingObject extends MovingObject {
     public ArmedMovingObject(PointF point, TextureRegion mainTextureRegion, ResourceManager resourceManager) {
         super(point, mainTextureRegion, resourceManager.getVertexBufferObjectManager());
         mResourceManager = resourceManager;
+        mAlive = true;
     }
 
     @Override
@@ -30,11 +31,12 @@ public abstract class ArmedMovingObject extends MovingObject {
 
     }
 
-    public boolean canShoot(long now) {
-        if (now - mLastShoot > mTimeRecharge) {
-            return true;
-        }
-        return false;
+    public boolean canShoot(long now, float cameraMinY) {
+        return now - mLastShoot > mTimeRecharge && posY() > cameraMinY;
+    }
+
+    public float getHealth() {
+        return mHealth;
     }
 
     public abstract List<FlyingObject> shoot(long now);

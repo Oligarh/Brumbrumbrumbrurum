@@ -3,13 +3,13 @@ package com.lugar.steelbird.mathengine;
 import android.graphics.PointF;
 import android.util.Log;
 
-import com.lugar.steelbird.Config;
-import com.lugar.steelbird.GameActivity;
-import com.lugar.steelbird.ResourceManager;
-import com.lugar.steelbird.UIHandler;
+import com.lugar.steelbird.*;
 import com.lugar.steelbird.mathengine.ammunitions.FlyingObject;
+import com.lugar.steelbird.mathengine.bots.Tank;
 import com.lugar.steelbird.mathengine.statics.StaticObject;
 
+import com.lugar.steelbird.model.Item;
+import com.lugar.steelbird.model.SceneObject;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 
@@ -43,9 +43,14 @@ public class MathEngine implements Runnable {
     private final List<ArmedMovingObject> mArmedMovingObjects = new ArrayList<ArmedMovingObject>();
     private final List<FlyingObject> mFlyingObjects = new ArrayList<FlyingObject>();
     private final List<FlyingObject> mBotFlyingObjects = new ArrayList<FlyingObject>();
-    private final List<StaticObject> mStaticObjects = new ArrayList<StaticObject>();
+    private final List<StaticObject> mBackground = new ArrayList<StaticObject>();
 
-    public MathEngine(GameActivity gameActivity) {
+    private final List<Item> mAllObjects;
+
+    public MathEngine(GameActivity gameActivity, int resLevelID) {
+
+        LevelBuilder levelBuilder = new LevelBuilder(gameActivity.getResources(), resLevelID);
+        mAllObjects = levelBuilder.getSceneObjects();
 
         mGameActivity = gameActivity;
         mResourceManager = gameActivity.getResourceManager();
@@ -56,26 +61,26 @@ public class MathEngine implements Runnable {
 
         mRotateBackgroundDistance = mResourceManager.getBackGround().getHeight() * Config.SCALE;
 
-        mStaticObjects.add(new StaticObject(new PointF(
+        mBackground.add(new StaticObject(new PointF(
                 mCamera.getCenterX(),
                 mCamera.getCenterY() - mRotateBackgroundDistance),
                 mResourceManager.getBackGround(),
                 gameActivity.getVertexBufferObjectManager()));
 
-        mStaticObjects.add(new StaticObject(new PointF(
+        mBackground.add(new StaticObject(new PointF(
                 mCamera.getCenterX(),
                 mCamera.getCenterY()),
                 mResourceManager.getBackGround(),
                 gameActivity.getVertexBufferObjectManager()));
 
-        mStaticObjects.add(new StaticObject(new PointF(
+        mBackground.add(new StaticObject(new PointF(
                 mCamera.getCenterX(),
                 mCamera.getCenterY() + mRotateBackgroundDistance),
                 mResourceManager.getBackGround(),
                 gameActivity.getVertexBufferObjectManager()));
 
-        for (StaticObject staticObject : mStaticObjects) {
-            mSceneBackground.attachChild(staticObject.getSprite());
+        for (StaticObject background : mBackground) {
+            mSceneBackground.attachChild(background.getSprite());
         }
 
         mHelicopter = new Helicopter(new PointF(Config.CAMERA_WIDTH / 2, Config.CAMERA_HEIGHT * 0.8f),
@@ -154,7 +159,7 @@ public class MathEngine implements Runnable {
 
         // tact Helicopter
         mHelicopter.tact(now, time);
-        if (mHelicopter.canShoot(now)) {
+        if (mHelicopter.canShoot(now, mCamera.getYMin())) {
             final List<FlyingObject> flyingObjects = mHelicopter.shoot(now);
             for (FlyingObject flyingObject : flyingObjects) {
                 addHelicopterFlyingObject(flyingObject);
@@ -220,7 +225,7 @@ public class MathEngine implements Runnable {
             ArmedMovingObject botObject = botIterator.next();
             botObject.tact(now, time);
 
-            if (botObject.canShoot(now)) {
+            if (botObject.canShoot(now, mCamera.getYMin())) {
                 final List<FlyingObject> flyingObjects = botObject.shoot(now);
                 for (FlyingObject flyingObject : flyingObjects) {
                     addBotFlyingObject(flyingObject);
@@ -233,6 +238,19 @@ public class MathEngine implements Runnable {
         }
         // END tact bots
 
+        for (Iterator<Item> iterator = mAllObjects.iterator(); iterator.hasNext(); ) {
+            Item sceneObject = iterator.next();
+            if (-sceneObject.getPointY() > (mCamera.getCenterY() - Config.CAMERA_HEIGHT)) {
+                if (sceneObject.getType().equals(Tags.TANK)) {
+//                  TODO shall be NextPoint
+                    addArmedMovingObject(new Tank(new PointF(sceneObject.getPointX(), -sceneObject.getPointY()),
+                            new PointF(sceneObject.getNextPointX(), -sceneObject.getNextPointY()),
+                            mResourceManager, mHelicopter));
+                    iterator.remove();
+                }
+            }
+        }
+
         updateBackground(time);
     }
 
@@ -240,12 +258,12 @@ public class MathEngine implements Runnable {
         mSceneHO.attachChild(object.getMainSprite());
     }
 
-    public void addArmedMovingObject(ArmedMovingObject object) {
+    public synchronized void addArmedMovingObject(ArmedMovingObject object) {
         mArmedMovingObjects.add(object);
         mSceneMO.attachChild(object.getMainSprite());
     }
 
-    public void removeArmedMovingObject(final ArmedMovingObject object, Iterator iterator) {
+    public synchronized void removeArmedMovingObject(final ArmedMovingObject object, Iterator iterator) {
         mGameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -255,17 +273,17 @@ public class MathEngine implements Runnable {
         iterator.remove();
     }
 
-    public void addHelicopterFlyingObject(FlyingObject object) {
+    public synchronized void addHelicopterFlyingObject(FlyingObject object) {
         mFlyingObjects.add(object);
         mSceneFO.attachChild(object.getMainSprite());
     }
 
-    public void addBotFlyingObject(FlyingObject object) {
+    public synchronized void addBotFlyingObject(FlyingObject object) {
         mBotFlyingObjects.add(object);
         mSceneFO.attachChild(object.getMainSprite());
     }
 
-    public void removeFlyingObject(final FlyingObject object, Iterator iterator) {
+    public synchronized void removeFlyingObject(final FlyingObject object, Iterator iterator) {
         mGameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -285,9 +303,9 @@ public class MathEngine implements Runnable {
 
     private void updateBackground(long period) {
 
-        for (StaticObject staticObject : mStaticObjects) {
-            if (staticObject.posY() - mRotateBackgroundDistance / 2 > mCamera.getCenterY() + Config.CAMERA_HEIGHT / 2) {
-                staticObject.setPoint(staticObject.posY() - mRotateBackgroundDistance * 3);
+        for (StaticObject background : mBackground) {
+            if (background.posY() - mRotateBackgroundDistance / 2 > mCamera.getCenterY() + Config.CAMERA_HEIGHT / 2) {
+                background.setPoint(background.posY() - mRotateBackgroundDistance * 3);
             }
         }
 
@@ -295,5 +313,13 @@ public class MathEngine implements Runnable {
         mCamera.setCenter(mCamera.getCenterX(), mCamera.getCenterY() - distance);
 
         mHelicopter.setY(mHelicopter.posY() - distance);
+    }
+
+    private interface Tags {
+
+        String TANK = "tank";
+        String SOLDIER = "soldier";
+        String CANNON = "cannon";
+        String DOT = "dot";
     }
 }

@@ -1,6 +1,7 @@
 package com.lugar.steelbird.mathengine.bots;
 
 import android.graphics.PointF;
+import com.lugar.steelbird.Config;
 import com.lugar.steelbird.ResourceManager;
 import com.lugar.steelbird.mathengine.ArmedMovingObject;
 import com.lugar.steelbird.mathengine.ConfigObject;
@@ -19,8 +20,11 @@ public class Tank extends ArmedMovingObject {
 
     private float mAngleTower;
 
-    public Tank(PointF point, ResourceManager resourceManager, Helicopter helicopter) {
+    public Tank(PointF point, PointF nextPoint, ResourceManager resourceManager, Helicopter helicopter) {
         super(point, resourceManager.getTankBody(), resourceManager);
+
+        mNextPoint = nextPoint;
+        mSpeed = 10;
 
         mHealth = ConfigObject.HEALTH_TANK;
         mTimeRecharge = ConfigObject.RECHARGE_TANK;
@@ -34,7 +38,36 @@ public class Tank extends ArmedMovingObject {
     @Override
     public void tact(long now, long period) {
         super.tact(now, period);
+//        updateAngle();
+
+//        if (distance(mPoint.x, mPoint.y, mNextPoint.x, mNextPoint.y) > 10) {
+//            float distance = (float) period / 1000 * mSpeed;
+//            float nextStep = distance(mPoint.x, mPoint.y, mNextPoint.x, mNextPoint.y);
+//            float m = nextStep - distance;
+//            float x = (m * mPoint.x + distance * mNextPoint.x) / nextStep;
+//            float y = (m * mPoint.y + distance * mNextPoint.y) / nextStep;
+//
+//            mPoint.x = x;
+//            mPoint.y = y;
+//        }
+//
+//        mMainSprite.setPosition(mPoint.x - mPointOffset.x, mPoint.y - mPointOffset.y);
         updateTowerAngle();
+    }
+
+    private void updateAngle() {
+
+        if (mMainSprite.getRotation() > 360) {
+            mMainSprite.setRotation(mMainSprite.getRotation() % 360);
+        }
+
+        final float directionX = mPoint.x - mNextPoint.x;
+        final float directionY = mPoint.y - mNextPoint.y;
+        final float rotationAngle = MathUtils.atan2(directionY, directionX);
+        mAngle = MathUtils.radToDeg(rotationAngle) - 90;
+
+        mMainSprite.setRotation(mAngle);
+//        mAngle = mMainSprite.getRotation();
     }
 
     @Override

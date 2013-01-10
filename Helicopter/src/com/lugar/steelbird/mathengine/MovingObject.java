@@ -38,7 +38,6 @@ public abstract class MovingObject {
     protected void damage(float health) {
         mHealth -= health;
         if (mHealth <= 0) {
-            mHealth = 0;
             mAlive = false;
         }
     }

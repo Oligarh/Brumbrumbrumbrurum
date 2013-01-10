@@ -61,7 +61,7 @@ public class GameActivity extends BaseGameActivity {
         mFpsCounter = new FPSCounter();
         mEngine.registerUpdateHandler(mFpsCounter);
 
-        mMathEngine = new MathEngine(this);
+        mMathEngine = new MathEngine(this, R.raw.level_1);
         mMathEngine.start();
 
         pOnCreateSceneCallback.onCreateSceneFinished(mScene);
