@@ -1,12 +1,17 @@
 package com.lugar.steelbird;
 
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureManager;
+import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
+import org.andengine.util.color.Color;
 
 public class ResourceManager {
 
@@ -26,7 +31,10 @@ public class ResourceManager {
 
     private TextureRegion mBackGround;
 
-    private TextureRegion mJoystik;
+    private TextureRegion mJoystick;
+
+    private ITexture mFontTexture;
+    private Font mFont;
 
     private VertexBufferObjectManager mVertexBufferObjectManager;
 
@@ -75,8 +83,8 @@ public class ResourceManager {
         mBackGround = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas,
                 baseGameActivity, "background_big.jpg", 0, 0);
 
-        mJoystik= BitmapTextureAtlasTextureRegionFactory.createFromAsset(joystikTextureAtlas,
-                baseGameActivity, "joystik.png", 0, 0);
+        mJoystick= BitmapTextureAtlasTextureRegionFactory.createFromAsset(joystikTextureAtlas,
+                baseGameActivity, "joystick.png", 0, 0);
 
         helicopterTextureAtlas.load();
         bombTextureAtlas.load();
@@ -86,6 +94,14 @@ public class ResourceManager {
         tankTextureAtlas.load();
         backgroundTextureAtlas.load();
         joystikTextureAtlas.load();
+
+        FontFactory.setAssetBasePath("fonts/");
+        this.mFontTexture = new BitmapTextureAtlas(baseGameActivity.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
+
+        this.mFont = FontFactory.createFromAsset(baseGameActivity.getFontManager(), mFontTexture,
+                baseGameActivity.getAssets(), "font.ttf", 16, true, Color.WHITE_ABGR_PACKED_INT);
+
+        this.mFont.load();
     }
 
     public TextureRegion getHelicopterBody() {
@@ -132,7 +148,11 @@ public class ResourceManager {
         return mVertexBufferObjectManager;
     }
 
-    public TextureRegion getJoystik() {
-        return mJoystik;
+    public TextureRegion getJoystick() {
+        return mJoystick;
+    }
+
+    public Font getFont() {
+        return mFont;
     }
 }
