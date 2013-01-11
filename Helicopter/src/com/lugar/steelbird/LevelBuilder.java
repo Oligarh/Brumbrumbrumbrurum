@@ -3,8 +3,9 @@ package com.lugar.steelbird;
 import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Log;
-import com.lugar.steelbird.model.SceneObject;
+
 import com.lugar.steelbird.model.Item;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class LevelBuilder {
 
+    private int mLength;
     private List<Item> mObjects;
 
     public LevelBuilder(Resources res, int resLevelID) {
@@ -29,7 +31,10 @@ public class LevelBuilder {
             input.close();
 
             String text = new String(buffer);
-            JSONArray jsonArray = new JSONArray(text);
+            JSONObject jsonObject = new JSONObject(text);
+            mLength = jsonObject.getInt(Tags.LENGTH);
+
+            JSONArray jsonArray = jsonObject.getJSONArray(Tags.ITEMS);
             for (int i = 0; i < jsonArray.length(); i++) {
                 final JSONObject itemObj = jsonArray.getJSONObject(i);
                 final Item item = new Item();
@@ -51,12 +56,19 @@ public class LevelBuilder {
         } else return str;
     }
 
+    public int getLength() {
+        return mLength;
+    }
+
     public List<Item> getSceneObjects() {
         return mObjects;
     }
 
     private interface Tags {
 
+        String LENGTH = "length";
+
+        String ITEMS = "items";
         String TYPE = "type";
         String POINT_X = "point_x";
         String POINT_Y = "point_y";

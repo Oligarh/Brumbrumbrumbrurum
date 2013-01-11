@@ -3,13 +3,16 @@ package com.lugar.steelbird.mathengine;
 import android.graphics.PointF;
 import android.util.Log;
 
-import com.lugar.steelbird.*;
+import com.lugar.steelbird.Config;
+import com.lugar.steelbird.GameActivity;
+import com.lugar.steelbird.LevelBuilder;
+import com.lugar.steelbird.ResourceManager;
+import com.lugar.steelbird.UIHandler;
 import com.lugar.steelbird.mathengine.ammunitions.FlyingObject;
 import com.lugar.steelbird.mathengine.bots.Tank;
 import com.lugar.steelbird.mathengine.statics.StaticObject;
-
 import com.lugar.steelbird.model.Item;
-import com.lugar.steelbird.model.SceneObject;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 
@@ -47,10 +50,15 @@ public class MathEngine implements Runnable {
 
     private final List<Item> mAllObjects;
 
+    private int mLength;
+
     public MathEngine(GameActivity gameActivity, int resLevelID) {
 
         LevelBuilder levelBuilder = new LevelBuilder(gameActivity.getResources(), resLevelID);
+        mLength = - levelBuilder.getLength() * Config.CAMERA_HEIGHT;
         mAllObjects = levelBuilder.getSceneObjects();
+
+        Log.d("~~~~~ MathEngine, LevelBuilder getLength = " + mLength, "");
 
         mGameActivity = gameActivity;
         mResourceManager = gameActivity.getResourceManager();
@@ -155,6 +163,12 @@ public class MathEngine implements Runnable {
 
     public void tact(long time) {
 
+        if (mCamera.getYMin() < mLength) {
+//          TODO VICTORY!!!
+            Log.d("~~~~~ MathEngine tact: ", "VICTORY!");
+            mPaused = true;
+        }
+
         final long now = System.currentTimeMillis();
 
         // tact Helicopter
@@ -175,7 +189,7 @@ public class MathEngine implements Runnable {
                     < mCriticalDistance) {
                 mHelicopter.damage(flyingObject.getDamage());
                 if (!mHelicopter.isAlive()) {
-                    System.out.println("~~~~~ GAME OVER!");
+                    Log.d("~~~~~ MathEngine tact (Helicopter health = " + mHelicopter.getHealth() + ")", "GAME OVER!");
                 }
                 removeFlyingObject(flyingObject, flyingIterator);
             }
@@ -186,6 +200,7 @@ public class MathEngine implements Runnable {
         for (Iterator<FlyingObject> flyingIterator = mFlyingObjects.iterator(); flyingIterator.hasNext(); ) {
             FlyingObject flyingObject = flyingIterator.next();
             flyingObject.tact(now, time);
+            boolean removed = false;
             for (Iterator<ArmedMovingObject> botIterator = mArmedMovingObjects.iterator(); botIterator.hasNext(); ) {
                 ArmedMovingObject botObject = botIterator.next();
                 if (flyingObject.getMainSprite().collidesWith(botObject.getMainSprite())) {
@@ -210,11 +225,12 @@ public class MathEngine implements Runnable {
                         removeArmedMovingObject(botObject, botIterator);
                     }
                     removeFlyingObject(flyingObject, flyingIterator);
+                    removed = true;
                 }
             }
 
-            if (flyingObject.posX() < mCamera.getXMin() || flyingObject.posY() < mCamera.getYMin() ||
-                    flyingObject.posX() > mCamera.getXMax() || flyingObject.posY() > mCamera.getYMax()) {
+            if (!removed && (flyingObject.posX() < mCamera.getXMin() || flyingObject.posY() < mCamera.getYMin() ||
+                    flyingObject.posX() > mCamera.getXMax() || flyingObject.posY() > mCamera.getYMax())) {
                 removeFlyingObject(flyingObject, flyingIterator);
             }
         }
@@ -240,11 +256,13 @@ public class MathEngine implements Runnable {
 
         for (Iterator<Item> iterator = mAllObjects.iterator(); iterator.hasNext(); ) {
             Item sceneObject = iterator.next();
-            if (-sceneObject.getPointY() > (mCamera.getCenterY() - Config.CAMERA_HEIGHT)) {
+            if (sceneObject.getPointY() / 100 * mLength > (mCamera.getCenterY() - Config.CAMERA_HEIGHT)) {
                 if (sceneObject.getType().equals(Tags.TANK)) {
-//                  TODO shall be NextPoint
-                    addArmedMovingObject(new Tank(new PointF(sceneObject.getPointX(), -sceneObject.getPointY()),
-                            new PointF(sceneObject.getNextPointX(), -sceneObject.getNextPointY()),
+                    addArmedMovingObject(new Tank(
+                            new PointF(sceneObject.getPointX() / 100 * Config.CAMERA_WIDTH,
+                                        sceneObject.getPointY() / 100 * mLength),
+                            new PointF(sceneObject.getNextPointX() / 100 * Config.CAMERA_WIDTH,
+                                        sceneObject.getNextPointY() / 100 * mLength),
                             mResourceManager, mHelicopter));
                     iterator.remove();
                 }
