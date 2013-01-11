@@ -42,8 +42,8 @@ public abstract class ArmedMovingObject extends MovingObject {
     public abstract List<FlyingObject> shoot(long now);
 
     public Bomb addBomb(float angle) {
-        float tX = (float) (posX() + (Config.CAMERA_WIDTH * Math.cos(angle * DEG_TO_PI - PI / 2)));
-        float tY = (float) (posY() + (Config.CAMERA_WIDTH * Math.sin(angle * DEG_TO_PI - PI / 2)));
+        float tX = (float) (posX() + (3 * Config.CAMERA_WIDTH * Math.cos(angle * DEG_TO_PI - PI / 2)));
+        float tY = (float) (posY() + (3 * Config.CAMERA_WIDTH * Math.sin(angle * DEG_TO_PI - PI / 2)));
         return new Bomb(new PointF(posX(), posY()), new PointF(tX, tY), angle,
                 mResourceManager.getBomb(), mResourceManager.getVertexBufferObjectManager());
     }

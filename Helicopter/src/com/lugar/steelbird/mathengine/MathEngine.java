@@ -14,6 +14,7 @@ import com.lugar.steelbird.mathengine.statics.StaticObject;
 import com.lugar.steelbird.model.Item;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.Entity;
 import org.andengine.entity.scene.Scene;
 
 import java.util.ArrayList;
@@ -22,16 +23,25 @@ import java.util.List;
 
 public class MathEngine implements Runnable {
 
+    private static final int LAYER_BACKGROUND = 0;
+    private static final int LAYER_BOTS = LAYER_BACKGROUND + 1;
+    private static final int LAYER_STATIC = LAYER_BOTS + 1;
+    private static final int LAYER_HELICOPTER = LAYER_STATIC + 1;
+
+    private Entity mBackgroundLayer;
+    private Entity mBotsLayer;
+    private Entity mStaticLayer;
+    private Entity mFlyingObjectBotLayer;
+    private Entity mFlyingObjectHelicopterLayer;
+    private Entity mHelicopterLayer;
+
     private static final int UPDATE_PERIOD = 40;
 
     private float mCriticalDistance;
     private float mRotateBackgroundDistance;
 
     private Camera mCamera;
-    private Scene mSceneBackground;
-    private Scene mSceneMO;
-    private Scene mSceneFO;
-    private Scene mSceneHO;
+    private Scene mScene;
     private ResourceManager mResourceManager;
 
     private boolean mAlive;
@@ -44,7 +54,7 @@ public class MathEngine implements Runnable {
     private GameActivity mGameActivity;
 
     private final List<ArmedMovingObject> mArmedMovingObjects = new ArrayList<ArmedMovingObject>();
-    private final List<FlyingObject> mFlyingObjects = new ArrayList<FlyingObject>();
+    private final List<FlyingObject> mHelicopterFlyingObjects = new ArrayList<FlyingObject>();
     private final List<FlyingObject> mBotFlyingObjects = new ArrayList<FlyingObject>();
     private final List<StaticObject> mBackground = new ArrayList<StaticObject>();
 
@@ -65,7 +75,7 @@ public class MathEngine implements Runnable {
 
         mCamera = gameActivity.getCamera();
 
-        mSceneBackground = gameActivity.getScene();
+        mScene = gameActivity.getScene();
 
         mRotateBackgroundDistance = mResourceManager.getBackGround().getHeight() * Config.SCALE;
 
@@ -87,28 +97,30 @@ public class MathEngine implements Runnable {
                 mResourceManager.getBackGround(),
                 gameActivity.getVertexBufferObjectManager()));
 
+        mBackgroundLayer = new Entity();
+        mBotsLayer = new Entity();
+        mStaticLayer = new Entity();
+        mFlyingObjectBotLayer = new Entity();
+        mFlyingObjectHelicopterLayer = new Entity();
+        mHelicopterLayer = new Entity();
+
+        mScene.attachChild(mBackgroundLayer);
+        mScene.attachChild(mFlyingObjectBotLayer);
+        mScene.attachChild(mBotsLayer);
+        mScene.attachChild(mStaticLayer);
+        mScene.attachChild(mFlyingObjectHelicopterLayer);
+        mScene.attachChild(mHelicopterLayer);
+
         for (StaticObject background : mBackground) {
-            mSceneBackground.attachChild(background.getSprite());
+            mBackgroundLayer.attachChild(background.getSprite());
         }
 
         mHelicopter = new Helicopter(new PointF(Config.CAMERA_WIDTH / 2, Config.CAMERA_HEIGHT * 0.8f),
                 mResourceManager);
 
-        mSceneHO = new Scene();
-        mSceneHO.setBackgroundEnabled(false);
-        mSceneHO.setChildScene(new UIHandler(mCamera, mHelicopter, mResourceManager.getJoystick(),
+        mScene.setChildScene(new UIHandler(mCamera, mHelicopter, mResourceManager.getJoystick(),
                 mResourceManager.getVertexBufferObjectManager(), gameActivity.getFpsCounter(),
                 mResourceManager.getFont()));
-
-        mSceneMO = new Scene();
-        mSceneMO.setBackgroundEnabled(false);
-        mSceneMO.setChildScene(mSceneHO);
-
-        mSceneFO = new Scene();
-        mSceneFO.setBackgroundEnabled(false);
-        mSceneFO.setChildScene(mSceneMO);
-
-        mSceneBackground.setChildScene(mSceneFO);
 
         mCriticalDistance = mHelicopter.getMainSprite().getWidthScaled() * 0.3f;
 
@@ -191,13 +203,16 @@ public class MathEngine implements Runnable {
                 if (!mHelicopter.isAlive()) {
                     Log.d("~~~~~ MathEngine tact (Helicopter health = " + mHelicopter.getHealth() + ")", "GAME OVER!");
                 }
-                removeFlyingObject(flyingObject, flyingIterator);
+                removeFlyingObjectBot(flyingObject, flyingIterator);
+            } else if (flyingObject.posX() < mCamera.getXMin() || flyingObject.posY() < mCamera.getYMin() ||
+                    flyingObject.posX() > mCamera.getXMax() || flyingObject.posY() > mCamera.getYMax()) {
+                removeFlyingObjectBot(flyingObject, flyingIterator);
             }
         }
         // END tact bombs of bots
 
         // tact bombs of Helicopter
-        for (Iterator<FlyingObject> flyingIterator = mFlyingObjects.iterator(); flyingIterator.hasNext(); ) {
+        for (Iterator<FlyingObject> flyingIterator = mHelicopterFlyingObjects.iterator(); flyingIterator.hasNext(); ) {
             FlyingObject flyingObject = flyingIterator.next();
             flyingObject.tact(now, time);
             boolean removed = false;
@@ -224,14 +239,14 @@ public class MathEngine implements Runnable {
 
                         removeArmedMovingObject(botObject, botIterator);
                     }
-                    removeFlyingObject(flyingObject, flyingIterator);
+                    removeFlyingObjectHelicopter(flyingObject, flyingIterator);
                     removed = true;
                 }
             }
 
             if (!removed && (flyingObject.posX() < mCamera.getXMin() || flyingObject.posY() < mCamera.getYMin() ||
                     flyingObject.posX() > mCamera.getXMax() || flyingObject.posY() > mCamera.getYMax())) {
-                removeFlyingObject(flyingObject, flyingIterator);
+                removeFlyingObjectHelicopter(flyingObject, flyingIterator);
             }
         }
         // END tact bombs of Helicopter
@@ -273,39 +288,49 @@ public class MathEngine implements Runnable {
     }
 
     public void addHeroObject(Helicopter object) {
-        mSceneHO.attachChild(object.getMainSprite());
+        mHelicopterLayer.attachChild(object.getMainSprite());
     }
 
     public synchronized void addArmedMovingObject(ArmedMovingObject object) {
         mArmedMovingObjects.add(object);
-        mSceneMO.attachChild(object.getMainSprite());
+        mBotsLayer.attachChild(object.getMainSprite());
     }
 
     public synchronized void removeArmedMovingObject(final ArmedMovingObject object, Iterator iterator) {
         mGameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mSceneMO.detachChild(object.getMainSprite());
+                mBotsLayer.detachChild(object.getMainSprite());
             }
         });
         iterator.remove();
     }
 
     public synchronized void addHelicopterFlyingObject(FlyingObject object) {
-        mFlyingObjects.add(object);
-        mSceneFO.attachChild(object.getMainSprite());
+        mHelicopterFlyingObjects.add(object);
+        mFlyingObjectHelicopterLayer.attachChild(object.getMainSprite());
     }
 
     public synchronized void addBotFlyingObject(FlyingObject object) {
         mBotFlyingObjects.add(object);
-        mSceneFO.attachChild(object.getMainSprite());
+        mFlyingObjectBotLayer.attachChild(object.getMainSprite());
     }
 
-    public synchronized void removeFlyingObject(final FlyingObject object, Iterator iterator) {
+    public synchronized void removeFlyingObjectBot(final FlyingObject object, Iterator iterator) {
         mGameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mSceneFO.detachChild(object.getMainSprite());
+                mFlyingObjectBotLayer.detachChild(object.getMainSprite());
+            }
+        });
+        iterator.remove();
+    }
+
+    public synchronized void removeFlyingObjectHelicopter(final FlyingObject object, Iterator iterator) {
+        mGameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mFlyingObjectHelicopterLayer.detachChild(object.getMainSprite());
             }
         });
         iterator.remove();
