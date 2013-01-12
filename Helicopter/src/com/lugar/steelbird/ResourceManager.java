@@ -53,7 +53,7 @@ public class ResourceManager {
         BitmapTextureAtlas bulletTextureAtlas = new BitmapTextureAtlas(textureManager, 11, 31);
         BitmapTextureAtlas onScreenControlTextureAtlas = new BitmapTextureAtlas(textureManager, 256, 128);
         BitmapTextureAtlas explosionTextureAtlas = new BitmapTextureAtlas(textureManager, 1024, 768);
-        BitmapTextureAtlas tankTextureAtlas = new BitmapTextureAtlas(textureManager, 162, 197);
+        BitmapTextureAtlas tankTextureAtlas = new BitmapTextureAtlas(textureManager, 88, 107);
         BitmapTextureAtlas backgroundTextureAtlas = new BitmapTextureAtlas(textureManager, 1280, 800);
         BitmapTextureAtlas joystickTextureAtlas = new BitmapTextureAtlas(textureManager, 352, 352);
         BitmapTextureAtlas tree1TextureAtlas = new BitmapTextureAtlas(textureManager, 512, 256);
@@ -83,7 +83,7 @@ public class ResourceManager {
                 baseGameActivity, "tank_body.png", 0, 0);
 
         mTankTower = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tankTextureAtlas,
-                baseGameActivity, "tank_tower.png", 81, 0);
+                baseGameActivity, "tank_tower.png", 44, 0);
 
         mBackGround = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas,
                 baseGameActivity, "background_big.jpg", 0, 0);
