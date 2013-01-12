@@ -29,6 +29,10 @@ public class ResourceManager {
     private TextureRegion mTankBody;
     private TextureRegion mTankTower;
 
+    private TextureRegion mTree1;
+    private TextureRegion mTreeShadow1;
+
+
     private TextureRegion mBackGround;
 
     private TextureRegion mJoystick;
@@ -51,7 +55,8 @@ public class ResourceManager {
         BitmapTextureAtlas explosionTextureAtlas = new BitmapTextureAtlas(textureManager, 1024, 768);
         BitmapTextureAtlas tankTextureAtlas = new BitmapTextureAtlas(textureManager, 162, 197);
         BitmapTextureAtlas backgroundTextureAtlas = new BitmapTextureAtlas(textureManager, 1280, 800);
-        BitmapTextureAtlas joystikTextureAtlas = new BitmapTextureAtlas(textureManager, 352, 352);
+        BitmapTextureAtlas joystickTextureAtlas = new BitmapTextureAtlas(textureManager, 352, 352);
+        BitmapTextureAtlas tree1TextureAtlas = new BitmapTextureAtlas(textureManager, 512, 256);
 
         mHelicopterBody = BitmapTextureAtlasTextureRegionFactory.createFromAsset(helicopterTextureAtlas,
                 baseGameActivity, "helicopter_body.png", 0, 0);
@@ -83,8 +88,14 @@ public class ResourceManager {
         mBackGround = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas,
                 baseGameActivity, "background_big.jpg", 0, 0);
 
-        mJoystick= BitmapTextureAtlasTextureRegionFactory.createFromAsset(joystikTextureAtlas,
+        mJoystick = BitmapTextureAtlasTextureRegionFactory.createFromAsset(joystickTextureAtlas,
                 baseGameActivity, "joystick.png", 0, 0);
+
+        mTree1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tree1TextureAtlas,
+                baseGameActivity, "tree_1.png", 0, 0);
+
+        mTreeShadow1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tree1TextureAtlas,
+                baseGameActivity, "tree_1_shadow.png", 256, 0);
 
         helicopterTextureAtlas.load();
         bombTextureAtlas.load();
@@ -93,7 +104,8 @@ public class ResourceManager {
         explosionTextureAtlas.load();
         tankTextureAtlas.load();
         backgroundTextureAtlas.load();
-        joystikTextureAtlas.load();
+        joystickTextureAtlas.load();
+        tree1TextureAtlas.load();
 
         FontFactory.setAssetBasePath("fonts/");
         this.mFontTexture = new BitmapTextureAtlas(baseGameActivity.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
@@ -154,5 +166,13 @@ public class ResourceManager {
 
     public Font getFont() {
         return mFont;
+    }
+
+    public TextureRegion getTree1() {
+        return mTree1;
+    }
+
+    public TextureRegion getTreeShadow1() {
+        return mTreeShadow1;
     }
 }

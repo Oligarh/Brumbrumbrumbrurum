@@ -44,6 +44,7 @@ public class MathEngine implements Runnable {
     private final List<FlyingObject> mFlyingObjects = new ArrayList<FlyingObject>();
     private final List<FlyingObject> mBotFlyingObjects = new ArrayList<FlyingObject>();
     private final List<StaticObject> mBackground = new ArrayList<StaticObject>();
+    private final List<StaticObject> mStaticObjects = new ArrayList<StaticObject>();
 
     private final List<Item> mAllObjects;
 
