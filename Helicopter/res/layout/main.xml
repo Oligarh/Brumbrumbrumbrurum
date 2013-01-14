@@ -1,52 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+              android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:gravity="bottom"
               android:padding="10dp"
-        android:weightSum="5">
+              android:weightSum="5">
 
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:text="Play"
-            android:textSize="24sp"
-            android:textColor="@android:color/darker_gray"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="1"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:layout_weight="1"
-            android:onClick="play"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"/>
 
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:text="Options"
-            android:textSize="24sp"
-            android:textColor="@android:color/darker_gray"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="1"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:layout_weight="1"/>
+    <LinearLayout
+                  android:orientation="vertical"
+                  android:layout_width="0dp"
+                  android:layout_weight="2"
+                  android:layout_height="match_parent"
+                  android:padding="10dp"
+                  android:weightSum="3">
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:text="Play"
+                android:textSize="24sp"
+                android:textColor="@android:color/darker_gray"
+                android:shadowColor="@android:color/black"
+                android:shadowRadius="1"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:layout_weight="1"
+                android:onClick="play"/>
 
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:text="Exit"
-            android:textSize="24sp"
-            android:textColor="@android:color/darker_gray"
-            android:shadowColor="@android:color/black"
-            android:shadowRadius="1"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:layout_weight="1"
-            android:onClick="onBackPressed"/>
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:text="Options"
+                android:textSize="24sp"
+                android:textColor="@android:color/darker_gray"
+                android:shadowColor="@android:color/black"
+                android:shadowRadius="1"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:layout_weight="1"/>
+
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:text="Exit"
+                android:textSize="24sp"
+                android:textColor="@android:color/darker_gray"
+                android:shadowColor="@android:color/black"
+                android:shadowRadius="1"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:layout_weight="1"
+                android:onClick="onBackPressed"/>
+
+    </LinearLayout>
 
 </LinearLayout>
 

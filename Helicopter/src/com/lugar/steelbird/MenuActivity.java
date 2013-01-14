@@ -14,7 +14,8 @@ public class MenuActivity extends Activity {
     }
 
     public void play(View v) {
-        startActivity(new Intent(this, GameActivity.class));
+//        startActivity(new Intent(this, GameActivity.class));
+        startActivity(new Intent(this, QuestActivity.class));
     }
 
     public void onBackPressed(View v) {

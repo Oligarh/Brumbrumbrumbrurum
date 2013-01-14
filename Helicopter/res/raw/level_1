@@ -56,6 +56,34 @@
                 "point_y": "90.0",
                 "next_point_x":"50.0",
                 "next_point_y": "70.0"
+                },
+            {
+                "type":"tree_1",
+                "point_x":"60.0",
+                "point_y": "5.0",
+                "next_point_x":"60.0",
+                "next_point_y": "5.0"
+                },
+            {
+                "type":"tree_1",
+                "point_x":"50.0",
+                "point_y": "3.0",
+                "next_point_x":"60.0",
+                "next_point_y": "5.0"
+                },
+            {
+                "type":"tree_1",
+                "point_x":"40.0",
+                "point_y": "15.0",
+                "next_point_x":"60.0",
+                "next_point_y": "5.0"
+                },
+            {
+                "type":"tree_1",
+                "point_x":"25.0",
+                "point_y": "21.0",
+                "next_point_x":"60.0",
+                "next_point_y": "5.0"
                 }
 
         ]

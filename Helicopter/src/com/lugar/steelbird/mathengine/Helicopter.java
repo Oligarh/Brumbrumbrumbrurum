@@ -6,6 +6,7 @@ import com.lugar.steelbird.ResourceManager;
 import com.lugar.steelbird.mathengine.ammunitions.Bullet;
 import com.lugar.steelbird.mathengine.ammunitions.FlyingObject;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.region.TextureRegion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,9 @@ public class Helicopter extends ArmedMovingObject {
         mSpeed = 80;
         mPropellerSprite = new Sprite(0, 0, resourceManager.getHelicopterPropeller(),
                 resourceManager.getVertexBufferObjectManager());
+
+        mPointShadow = new PointF(mMainSprite.getWidthScaled() / 5, mMainSprite.getWidthScaled() / 5);
+
         mMainSprite.attachChild(mPropellerSprite);
         mMainSprite.setScale(Config.SCALE);
         mOffsetBullet = mMainSprite.getWidthScaled() / 9;
@@ -51,6 +55,7 @@ public class Helicopter extends ArmedMovingObject {
         }
 
         mMainSprite.setPosition(mPoint.x - mPointOffset.x, mPoint.y - mPointOffset.y);
+        mSpriteShadow.setPosition(mMainSprite.getX() + mPointShadow.x, mMainSprite.getY() + mPointShadow.y);
 //        mPoint.x = mMainSprite.getX() + mPointOffset.x;
 //        mPoint.y = mMainSprite.getY() + mPointOffset.y;
     }
@@ -90,10 +95,12 @@ public class Helicopter extends ArmedMovingObject {
 
         if (mMainSprite.getRotation() > 360) {
             mMainSprite.setRotation(mMainSprite.getRotation() % 360);
+            mSpriteShadow.setRotation(mSpriteShadow.getRotation() % 360);
         }
 
         mPropellerSprite.setRotation(mPropellerSprite.getRotation() + 20);
         mMainSprite.setRotation(mAngle);
+        mSpriteShadow.setRotation(mAngle);
 //        mAngle = mMainSprite.getRotation();
     }
 
@@ -107,6 +114,16 @@ public class Helicopter extends ArmedMovingObject {
         float sXRight = (float) (posX() + (mOffsetBullet * Math.cos(mAngle * DEG_TO_PI)));
         float sYRight = (float) (posY() + (mOffsetBullet * Math.sin(mAngle * DEG_TO_PI)));
         return addBullet(sXRight, sYRight, mAngle);
+    }
+
+    @Override
+    public void addShadow(TextureRegion textureRegion) {
+        mSpriteShadow = new Sprite(
+                mMainSprite.getX() + mPointShadow.x,
+                mMainSprite.getY() + mPointShadow.y,
+                textureRegion,
+                mMainSprite.getVertexBufferObjectManager());
+        mSpriteShadow.setScale(Config.SCALE);
     }
 
     enum WeaponType {

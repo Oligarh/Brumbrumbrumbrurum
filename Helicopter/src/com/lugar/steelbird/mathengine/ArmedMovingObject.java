@@ -6,6 +6,7 @@ import com.lugar.steelbird.ResourceManager;
 import com.lugar.steelbird.mathengine.ammunitions.Bomb;
 import com.lugar.steelbird.mathengine.ammunitions.Bullet;
 import com.lugar.steelbird.mathengine.ammunitions.FlyingObject;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 
 import java.util.List;
@@ -17,6 +18,9 @@ public abstract class ArmedMovingObject extends MovingObject {
 
     protected long mLastShoot;
     protected int mTimeRecharge;
+
+    protected Sprite mSpriteShadow;
+    protected PointF mPointShadow;
 
     protected ResourceManager mResourceManager;
 
@@ -57,5 +61,11 @@ public abstract class ArmedMovingObject extends MovingObject {
         float tY = (float) (sY + (Config.CAMERA_WIDTH * Math.sin(angle * DEG_TO_PI - PI / 2)));
         return new Bullet(new PointF(sX, sY), new PointF(tX, tY), angle, mResourceManager.getBullet(),
                 mResourceManager.getVertexBufferObjectManager());
+    }
+
+    public abstract void addShadow(TextureRegion textureRegion);
+
+    public Sprite getSpriteShadow() {
+        return mSpriteShadow;
     }
 }

@@ -12,6 +12,7 @@ public class StaticObject {
     protected PointF mPointOffset;
 
     protected Sprite mSprite;
+    protected Sprite mSpriteShadow;
 
     public StaticObject(PointF point, TextureRegion textureRegion,
                         VertexBufferObjectManager vertexBufferObjectManager) {
@@ -37,9 +38,21 @@ public class StaticObject {
         return mSprite;
     }
 
+    public Sprite getSpriteShadow() {
+        return mSpriteShadow;
+    }
+
     public void setPoint(float newY) {
         mPoint.y = newY;
         mSprite.setPosition(mPoint.x - mPointOffset.x, mPoint.y - mPointOffset.y);
     }
 
+    public void addShadow(TextureRegion textureRegion) {
+        mSpriteShadow = new Sprite(
+                mSprite.getX() + textureRegion.getWidth() * Config.SCALE / 20,
+                mSprite.getY() + textureRegion.getWidth() * Config.SCALE / 20,
+                textureRegion,
+                mSprite.getVertexBufferObjectManager());
+        mSpriteShadow.setScale(Config.SCALE);
+    }
 }

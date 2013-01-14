@@ -24,7 +24,7 @@
                 android:screenOrientation="landscape" />
 
         <activity
-                android:name=".TestActivity"
+                android:name=".QuestActivity"
                 android:screenOrientation="landscape" />
 
     </application>

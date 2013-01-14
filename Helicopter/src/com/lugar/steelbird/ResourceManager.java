@@ -17,6 +17,7 @@ public class ResourceManager {
 
     private TextureRegion mHelicopterBody;
     private TextureRegion mHelicopterPropeller;
+    private TextureRegion mHelicopterShadow;
 
     private TextureRegion mBomb;
     private TextureRegion mBullet;
@@ -28,6 +29,7 @@ public class ResourceManager {
 
     private TextureRegion mTankBody;
     private TextureRegion mTankTower;
+    private TextureRegion mTankShadow;
 
     private TextureRegion mTree1;
     private TextureRegion mTreeShadow1;
@@ -48,12 +50,12 @@ public class ResourceManager {
 
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
-        BitmapTextureAtlas helicopterTextureAtlas = new BitmapTextureAtlas(textureManager, 300, 151);
+        BitmapTextureAtlas helicopterTextureAtlas = new BitmapTextureAtlas(textureManager, 450, 151);
         BitmapTextureAtlas bombTextureAtlas = new BitmapTextureAtlas(textureManager, 13, 45);
         BitmapTextureAtlas bulletTextureAtlas = new BitmapTextureAtlas(textureManager, 11, 31);
         BitmapTextureAtlas onScreenControlTextureAtlas = new BitmapTextureAtlas(textureManager, 256, 128);
         BitmapTextureAtlas explosionTextureAtlas = new BitmapTextureAtlas(textureManager, 1024, 768);
-        BitmapTextureAtlas tankTextureAtlas = new BitmapTextureAtlas(textureManager, 88, 107);
+        BitmapTextureAtlas tankTextureAtlas = new BitmapTextureAtlas(textureManager, 132, 107);
         BitmapTextureAtlas backgroundTextureAtlas = new BitmapTextureAtlas(textureManager, 1280, 800);
         BitmapTextureAtlas joystickTextureAtlas = new BitmapTextureAtlas(textureManager, 352, 352);
         BitmapTextureAtlas tree1TextureAtlas = new BitmapTextureAtlas(textureManager, 512, 256);
@@ -63,6 +65,9 @@ public class ResourceManager {
 
         mHelicopterPropeller = BitmapTextureAtlasTextureRegionFactory.createFromAsset(helicopterTextureAtlas,
                 baseGameActivity, "helicopter_propeller.png", 150, 0);
+
+        mHelicopterShadow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(helicopterTextureAtlas,
+                baseGameActivity, "helicopter_shadow.png", 300, 0);
 
         mBomb = BitmapTextureAtlasTextureRegionFactory.createFromAsset(bombTextureAtlas,
                 baseGameActivity, "bomb.png", 0, 0);
@@ -84,6 +89,9 @@ public class ResourceManager {
 
         mTankTower = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tankTextureAtlas,
                 baseGameActivity, "tank_tower.png", 44, 0);
+
+        mTankShadow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tankTextureAtlas,
+                baseGameActivity, "tank_shadow.png", 88, 0);
 
         mBackGround = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas,
                 baseGameActivity, "background_big.jpg", 0, 0);
@@ -122,6 +130,10 @@ public class ResourceManager {
 
     public TextureRegion getHelicopterPropeller() {
         return mHelicopterPropeller;
+    }
+
+    public TextureRegion getHelicopterShadow() {
+        return mHelicopterShadow;
     }
 
     public TextureRegion getBomb() {
@@ -174,5 +186,9 @@ public class ResourceManager {
 
     public TextureRegion getTreeShadow1() {
         return mTreeShadow1;
+    }
+
+    public TextureRegion getTankShadow() {
+        return mTankShadow;
     }
 }

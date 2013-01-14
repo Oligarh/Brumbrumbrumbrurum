@@ -16,6 +16,7 @@ import com.lugar.steelbird.model.Item;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.Entity;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.Sprite;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -270,6 +271,15 @@ public class MathEngine implements Runnable {
         }
         // END tact bots
 
+        // tact bots
+        for (Iterator<StaticObject> staticIterator = mStaticObjects.iterator(); staticIterator.hasNext(); ) {
+            StaticObject staticObject = staticIterator.next();
+            if (staticObject.posY() > mCamera.getYMax() + staticObject.getSprite().getHeightScaled() / 2) {
+                removeStaticObject(staticObject, staticIterator);
+            }
+        }
+        // END tact bots
+
         for (Iterator<Item> iterator = mAllObjects.iterator(); iterator.hasNext(); ) {
             Item sceneObject = iterator.next();
             if (sceneObject.getPointY() / 100 * mLength > (mCamera.getCenterY() - Config.CAMERA_HEIGHT)) {
@@ -281,6 +291,11 @@ public class MathEngine implements Runnable {
                                         sceneObject.getNextPointY() / 100 * mLength),
                             mResourceManager, mHelicopter));
                     iterator.remove();
+                } else if (sceneObject.getType().equals(Tags.TREE_1)) {
+                    addStaticObject(new StaticObject(new PointF(sceneObject.getPointX() / 100 * Config.CAMERA_WIDTH,
+                            sceneObject.getPointY() / 100 * mLength), mResourceManager.getTree1(),
+                            mResourceManager.getVertexBufferObjectManager()));
+                    iterator.remove();
                 }
             }
         }
@@ -289,19 +304,42 @@ public class MathEngine implements Runnable {
     }
 
     public void addHeroObject(Helicopter object) {
+        object.addShadow(mResourceManager.getHelicopterShadow());
+        mHelicopterLayer.attachChild(object.getSpriteShadow());
         mHelicopterLayer.attachChild(object.getMainSprite());
     }
 
     public synchronized void addArmedMovingObject(ArmedMovingObject object) {
         mArmedMovingObjects.add(object);
+        object.addShadow(mResourceManager.getTankShadow());
+        mBotsLayer.attachChild(object.getSpriteShadow());
         mBotsLayer.attachChild(object.getMainSprite());
+    }
+
+    public synchronized void addStaticObject(StaticObject object) {
+        mStaticObjects.add(object);
+        object.addShadow(mResourceManager.getTreeShadow1());
+        mStaticLayer.attachChild(object.getSpriteShadow());
+        mStaticLayer.attachChild(object.getSprite());
     }
 
     public synchronized void removeArmedMovingObject(final ArmedMovingObject object, Iterator iterator) {
         mGameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                mBotsLayer.detachChild(object.getSpriteShadow());
                 mBotsLayer.detachChild(object.getMainSprite());
+            }
+        });
+        iterator.remove();
+    }
+
+    public synchronized void removeStaticObject(final StaticObject object, Iterator iterator) {
+        mGameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mStaticLayer.detachChild(object.getSpriteShadow());
+                mStaticLayer.detachChild(object.getSprite());
             }
         });
         iterator.remove();
@@ -365,5 +403,7 @@ public class MathEngine implements Runnable {
         String SOLDIER = "soldier";
         String CANNON = "cannon";
         String DOT = "dot";
+
+        String TREE_1 = "tree_1";
     }
 }
