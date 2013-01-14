@@ -7,11 +7,14 @@ import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
+
+import java.util.Random;
 
 public class ResourceManager {
 
@@ -34,8 +37,30 @@ public class ResourceManager {
     private TextureRegion mTree1;
     private TextureRegion mTreeShadow1;
 
-    private TextureRegion mPalm;
-    private TextureRegion mPalmShadow;
+    private TextureRegion mPalm_1;
+    private TextureRegion mPalmShadow_1;
+    private TextureRegion mPalm_2;
+    private TextureRegion mPalmShadow_2;
+    private TextureRegion mPalm_3;
+    private TextureRegion mPalmShadow_3;
+    private TextureRegion mPalm_4;
+    private TextureRegion mPalmShadow_4;
+    private TextureRegion mPalm_5;
+    private TextureRegion mPalmShadow_5;
+    private TextureRegion mPalm_6;
+    private TextureRegion mPalmShadow_6;
+    private TextureRegion mPalm_7;
+    private TextureRegion mPalmShadow_7;
+    private TextureRegion mPalm_8;
+    private TextureRegion mPalmShadow_8;
+    private TextureRegion mPalm_9;
+    private TextureRegion mPalmShadow_9;
+    private TextureRegion mPalm_10;
+    private TextureRegion mPalmShadow_10;
+    private TextureRegion mPalm_11;
+    private TextureRegion mPalmShadow_11;
+    private TextureRegion mPalm_12;
+    private TextureRegion mPalmShadow_12;
 
     private TextureRegion mSoldier;
     private TextureRegion mSoldierShadow;
@@ -64,8 +89,9 @@ public class ResourceManager {
         BitmapTextureAtlas backgroundTextureAtlas = new BitmapTextureAtlas(textureManager, 1280, 800);
         BitmapTextureAtlas joystickTextureAtlas = new BitmapTextureAtlas(textureManager, 352, 352);
         BitmapTextureAtlas tree1TextureAtlas = new BitmapTextureAtlas(textureManager, 512, 256);
-        BitmapTextureAtlas palmTextureAtlas = new BitmapTextureAtlas(textureManager, 810, 402);
         BitmapTextureAtlas soldierTextureAtlas = new BitmapTextureAtlas(textureManager, 90, 61);
+        BitmapTextureAtlas palmTextureAtlas = new BitmapTextureAtlas(textureManager, 1200, 1200);
+        BitmapTextureAtlas palmShadowTextureAtlas = new BitmapTextureAtlas(textureManager, 1200, 1200);
 
         mHelicopterBody = BitmapTextureAtlasTextureRegionFactory.createFromAsset(helicopterTextureAtlas,
                 baseGameActivity, "helicopter_body.png", 0, 0);
@@ -112,17 +138,83 @@ public class ResourceManager {
         mTreeShadow1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tree1TextureAtlas,
                 baseGameActivity, "tree_1_shadow.png", 256, 0);
 
-        mPalm = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
-                baseGameActivity, "palm1.png", 0, 0);
-
-        mPalmShadow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
-                baseGameActivity, "palm_shadow1.png", 405, 0);
-
         mSoldier = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
                 baseGameActivity, "soldier.png", 0, 0);
 
         mSoldierShadow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
                 baseGameActivity, "soldier_shadow.png", 45, 0);
+
+        mPalm_1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
+                baseGameActivity, "palm_1.png", 0, 0);
+
+        mPalm_2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
+                baseGameActivity, "palm_2.png", 200, 0);
+
+        mPalm_3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
+                baseGameActivity, "palm_3.png", 400, 0);
+
+        mPalm_4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
+                baseGameActivity, "palm_4.png", 600, 0);
+
+        mPalm_5 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
+                baseGameActivity, "palm_5.png", 800, 0);
+
+        mPalm_6 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
+                baseGameActivity, "palm_6.png", 1000, 0);
+
+        mPalm_7 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
+                baseGameActivity, "palm_7.png", 0, 200);
+
+        mPalm_8 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
+                baseGameActivity, "palm_8.png", 200, 200);
+
+        mPalm_9 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
+                baseGameActivity, "palm_9.png", 400, 200);
+
+        mPalm_10 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
+                baseGameActivity, "palm_10.png", 600, 200);
+
+        mPalm_11 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
+                baseGameActivity, "palm_11.png", 800, 200);
+
+        mPalm_12 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
+                baseGameActivity, "palm_12.png", 1000, 200);
+
+        mPalmShadow_1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmShadowTextureAtlas,
+                baseGameActivity, "palm_1_shadow.png", 0, 0);
+
+        mPalmShadow_2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmShadowTextureAtlas,
+                baseGameActivity, "palm_2_shadow.png", 200, 0);
+
+        mPalmShadow_3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmShadowTextureAtlas,
+                baseGameActivity, "palm_3_shadow.png", 400, 0);
+
+        mPalmShadow_4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmShadowTextureAtlas,
+                baseGameActivity, "palm_4_shadow.png", 600, 0);
+
+        mPalmShadow_5 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmShadowTextureAtlas,
+                baseGameActivity, "palm_5_shadow.png", 800, 0);
+
+        mPalmShadow_6 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmShadowTextureAtlas,
+                baseGameActivity, "palm_6_shadow.png", 1000, 0);
+
+        mPalmShadow_7 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmShadowTextureAtlas,
+                baseGameActivity, "palm_7_shadow.png", 0, 200);
+
+        mPalmShadow_8 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmShadowTextureAtlas,
+                baseGameActivity, "palm_8_shadow.png", 200, 200);
+
+        mPalmShadow_9 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmShadowTextureAtlas,
+                baseGameActivity, "palm_9_shadow.png", 400, 200);
+
+        mPalmShadow_10 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmShadowTextureAtlas,
+                baseGameActivity, "palm_10_shadow.png", 600, 200);
+
+        mPalmShadow_11 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmShadowTextureAtlas,
+                baseGameActivity, "palm_11_shadow.png", 800, 200);
+
+        mPalmShadow_12 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmShadowTextureAtlas,
+                baseGameActivity, "palm_12_shadow.png", 1000, 200);
 
         helicopterTextureAtlas.load();
         bombTextureAtlas.load();
@@ -134,6 +226,7 @@ public class ResourceManager {
         joystickTextureAtlas.load();
         tree1TextureAtlas.load();
         palmTextureAtlas.load();
+        palmShadowTextureAtlas.load();
         soldierTextureAtlas.load();
 
         FontFactory.setAssetBasePath("fonts/");
@@ -213,19 +306,177 @@ public class ResourceManager {
         return mTankShadow;
     }
 
-    public TextureRegion getPalm() {
-        return mPalm;
-    }
-
-    public TextureRegion getPalmShadow() {
-        return mPalmShadow;
-    }
-
     public TextureRegion getSoldier() {
         return mSoldier;
     }
 
     public TextureRegion getSoldierShadow() {
         return mSoldierShadow;
+    }
+
+//    public TextureRegion getPalm_1() {
+//        return mPalm_1;
+//    }
+//
+//    public TextureRegion getPalmShadow_1() {
+//        return mPalmShadow_1;
+//    }
+//
+//    public TextureRegion getPalm_2() {
+//        return mPalm_2;
+//    }
+//
+//    public TextureRegion getPalmShadow_2() {
+//        return mPalmShadow_2;
+//    }
+//
+//    public TextureRegion getPalm_3() {
+//        return mPalm_3;
+//    }
+//
+//    public TextureRegion getPalmShadow_3() {
+//        return mPalmShadow_3;
+//    }
+//
+//    public TextureRegion getPalm_4() {
+//        return mPalm_4;
+//    }
+//
+//    public TextureRegion getPalmShadow_4() {
+//        return mPalmShadow_4;
+//    }
+//
+//    public TextureRegion getPalm_5() {
+//        return mPalm_5;
+//    }
+//
+//    public TextureRegion getPalmShadow_5() {
+//        return mPalmShadow_5;
+//    }
+//
+//    public TextureRegion getPalm_6() {
+//        return mPalm_6;
+//    }
+//
+//    public TextureRegion getPalmShadow_6() {
+//        return mPalmShadow_6;
+//    }
+//
+//    public TextureRegion getPalm_7() {
+//        return mPalm_7;
+//    }
+//
+//    public TextureRegion getPalmShadow_7() {
+//        return mPalmShadow_7;
+//    }
+//
+//    public TextureRegion getPalm_8() {
+//        return mPalm_8;
+//    }
+//
+//    public TextureRegion getPalmShadow_8() {
+//        return mPalmShadow_8;
+//    }
+//
+//    public TextureRegion getPalm_9() {
+//        return mPalm_9;
+//    }
+//
+//    public TextureRegion getPalmShadow_9() {
+//        return mPalmShadow_9;
+//    }
+//
+//    public TextureRegion getPalm_10() {
+//        return mPalm_10;
+//    }
+//
+//    public TextureRegion getPalmShadow_10() {
+//        return mPalmShadow_10;
+//    }
+//
+//    public TextureRegion getPalm_11() {
+//        return mPalm_11;
+//    }
+//
+//    public TextureRegion getPalmShadow_11() {
+//        return mPalmShadow_11;
+//    }
+//
+//    public TextureRegion getPalm_12() {
+//        return mPalm_12;
+//    }
+//
+//    public TextureRegion getPalmShadow_12() {
+//        return mPalmShadow_12;
+//    }
+
+    public TextureRegion getPalm() {
+        switch (new Random().nextInt(12)) {
+            case 0:
+                return mPalm_1;
+            case 1:
+                return mPalm_2;
+            case 2:
+                return mPalm_3;
+            case 3:
+                return mPalm_4;
+            case 4:
+                return mPalm_5;
+            case 5:
+                return mPalm_6;
+            case 6:
+                return mPalm_7;
+            case 7:
+                return mPalm_8;
+            case 8:
+                return mPalm_9;
+            case 9:
+                return mPalm_10;
+            case 10:
+                return mPalm_11;
+            case 11:
+                return mPalm_12;
+        }
+        return mPalm_1;
+    }
+
+    public TextureRegion getPalmShadow(ITextureRegion textureBody) {
+        if (textureBody == mPalm_1) {
+            return mPalmShadow_1;
+        }
+        if (textureBody == mPalm_2) {
+            return mPalmShadow_2;
+        }
+        if (textureBody == mPalm_3) {
+            return mPalmShadow_3;
+        }
+        if (textureBody == mPalm_4) {
+            return mPalmShadow_4;
+        }
+        if (textureBody == mPalm_5) {
+            return mPalmShadow_5;
+        }
+        if (textureBody == mPalm_6) {
+            return mPalmShadow_6;
+        }
+        if (textureBody == mPalm_7) {
+            return mPalmShadow_7;
+        }
+        if (textureBody == mPalm_8) {
+            return mPalmShadow_8;
+        }
+        if (textureBody == mPalm_9) {
+            return mPalmShadow_9;
+        }
+        if (textureBody == mPalm_10) {
+            return mPalmShadow_10;
+        }
+        if (textureBody == mPalm_11) {
+            return mPalmShadow_11;
+        }
+        if (textureBody == mPalm_12) {
+            return mPalmShadow_12;
+        }
+        return null;
     }
 }
