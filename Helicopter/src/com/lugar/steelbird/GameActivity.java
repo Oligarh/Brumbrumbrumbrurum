@@ -61,7 +61,9 @@ public class GameActivity extends BaseGameActivity {
         mFpsCounter = new FPSCounter();
         mEngine.registerUpdateHandler(mFpsCounter);
 
-        mMathEngine = new MathEngine(this, R.raw.level_1);
+        System.out.println("##### FILE: " + getIntent().getStringExtra("file"));
+        int resID = getResources().getIdentifier(getIntent().getStringExtra("file"), "raw", getPackageName());
+        mMathEngine = new MathEngine(this, resID);
         mMathEngine.start();
 
         pOnCreateSceneCallback.onCreateSceneFinished(mScene);

@@ -23,8 +23,7 @@ public class LevelBuilder {
         mObjects = new ArrayList<Item>();
 
         try {
-//            InputStream input = res.openRawResource(resLevelID);
-            InputStream input = res.openRawResource(R.raw.level_1);
+            InputStream input = res.openRawResource(resLevelID);
             int size = input.available();
             byte[] buffer = new byte[size];
             input.read(buffer);

@@ -2,14 +2,14 @@
     "length":"3",
     "items": [
             {
-                "type":"tank",
+                "type":"soldier",
                 "point_x":"20.0",
                 "point_y": "10.0",
                 "next_point_x":"30.0",
                 "next_point_y": "30.0"
                 },
             {
-                "type":"tank",
+                "type":"soldier",
                 "point_x":"40.0",
                 "point_y": "10.0",
                 "next_point_x":"70.0",
@@ -30,7 +30,7 @@
                 "next_point_y": "30.0"
                 },
             {
-                "type":"tank",
+                "type":"soldier",
                 "point_x":"40.0",
                 "point_y": "30.0",
                 "next_point_x":"20.0",

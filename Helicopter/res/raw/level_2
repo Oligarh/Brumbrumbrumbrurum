@@ -1,0 +1,40 @@
+{
+    "length":"2",
+    "items": [
+            {
+                "type":"tank",
+                "point_x":"20.0",
+                "point_y": "10.0",
+                "next_point_x":"30.0",
+                "next_point_y": "30.0"
+                },
+            {
+                "type":"tree_1",
+                "point_x":"60.0",
+                "point_y": "5.0",
+                "next_point_x":"60.0",
+                "next_point_y": "5.0"
+                },
+            {
+                "type":"tree_1",
+                "point_x":"50.0",
+                "point_y": "3.0",
+                "next_point_x":"60.0",
+                "next_point_y": "5.0"
+                },
+            {
+                "type":"tree_1",
+                "point_x":"55.0",
+                "point_y": "3.0",
+                "next_point_x":"60.0",
+                "next_point_y": "5.0"
+                },
+            {
+                "type":"tree_1",
+                "point_x":"56.0",
+                "point_y": "4.0",
+                "next_point_x":"60.0",
+                "next_point_y": "5.0"
+                }
+        ]
+}

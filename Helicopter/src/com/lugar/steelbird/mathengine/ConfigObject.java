@@ -7,6 +7,7 @@ public class ConfigObject {
     public static final int HEALTH_DOT = 75;
 
     public static final int RECHARGE_TANK = 5000;
+    public static final int RECHARGE_SOLDIER = 1000;
 
     public static final int DAMAGE_POOL = 2;
     public static final int DAMAGE_BOMB = 20;

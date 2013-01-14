@@ -34,6 +34,11 @@ public class ResourceManager {
     private TextureRegion mTree1;
     private TextureRegion mTreeShadow1;
 
+    private TextureRegion mPalm;
+    private TextureRegion mPalmShadow;
+
+    private TextureRegion mSoldier;
+    private TextureRegion mSoldierShadow;
 
     private TextureRegion mBackGround;
 
@@ -59,6 +64,8 @@ public class ResourceManager {
         BitmapTextureAtlas backgroundTextureAtlas = new BitmapTextureAtlas(textureManager, 1280, 800);
         BitmapTextureAtlas joystickTextureAtlas = new BitmapTextureAtlas(textureManager, 352, 352);
         BitmapTextureAtlas tree1TextureAtlas = new BitmapTextureAtlas(textureManager, 512, 256);
+        BitmapTextureAtlas palmTextureAtlas = new BitmapTextureAtlas(textureManager, 810, 402);
+        BitmapTextureAtlas soldierTextureAtlas = new BitmapTextureAtlas(textureManager, 90, 61);
 
         mHelicopterBody = BitmapTextureAtlasTextureRegionFactory.createFromAsset(helicopterTextureAtlas,
                 baseGameActivity, "helicopter_body.png", 0, 0);
@@ -105,6 +112,18 @@ public class ResourceManager {
         mTreeShadow1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tree1TextureAtlas,
                 baseGameActivity, "tree_1_shadow.png", 256, 0);
 
+        mPalm = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
+                baseGameActivity, "palm1.png", 0, 0);
+
+        mPalmShadow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
+                baseGameActivity, "palm_shadow1.png", 405, 0);
+
+        mSoldier = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
+                baseGameActivity, "soldier.png", 0, 0);
+
+        mSoldierShadow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
+                baseGameActivity, "soldier_shadow.png", 45, 0);
+
         helicopterTextureAtlas.load();
         bombTextureAtlas.load();
         bulletTextureAtlas.load();
@@ -114,6 +133,8 @@ public class ResourceManager {
         backgroundTextureAtlas.load();
         joystickTextureAtlas.load();
         tree1TextureAtlas.load();
+        palmTextureAtlas.load();
+        soldierTextureAtlas.load();
 
         FontFactory.setAssetBasePath("fonts/");
         this.mFontTexture = new BitmapTextureAtlas(baseGameActivity.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
@@ -190,5 +211,21 @@ public class ResourceManager {
 
     public TextureRegion getTankShadow() {
         return mTankShadow;
+    }
+
+    public TextureRegion getPalm() {
+        return mPalm;
+    }
+
+    public TextureRegion getPalmShadow() {
+        return mPalmShadow;
+    }
+
+    public TextureRegion getSoldier() {
+        return mSoldier;
+    }
+
+    public TextureRegion getSoldierShadow() {
+        return mSoldierShadow;
     }
 }
