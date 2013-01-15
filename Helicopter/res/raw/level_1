@@ -1,264 +1,278 @@
 {
-    "length":"3",
+    "length":"1",
     "items": [
             {
-                "type":"soldier",
-                "point_x":"20.0",
-                "point_y": "10.0",
-                "next_point_x":"30.0",
-                "next_point_y": "30.0"
-                },
-            {
-                "type":"soldier",
-                "point_x":"40.0",
-                "point_y": "10.0",
-                "next_point_x":"70.0",
-                "next_point_y": "10.0"
-                },
-            {
-                "type":"tank",
-                "point_x":"90.0",
-                "point_y": "10.0",
-                "next_point_x":"90.0",
-                "next_point_y": "70.0"
-                },
-            {
-                "type":"tank",
-                "point_x":"80.0",
-                "point_y": "20.0",
-                "next_point_x":"60.0",
-                "next_point_y": "30.0"
-                },
-            {
-                "type":"soldier",
-                "point_x":"40.0",
-                "point_y": "30.0",
-                "next_point_x":"20.0",
-                "next_point_y": "60.0"
-                },
-            {
-                "type":"tank",
-                "point_x":"80.0",
-                "point_y": "40.0",
-                "next_point_x":"80.0",
-                "next_point_y": "70.0"
-                },
-            {
-                "type":"tank",
-                "point_x":"50.0",
-                "point_y": "50.0",
-                "next_point_x":"70.0",
-                "next_point_y": "70.0"
-                },
-            {
-                "type":"tank",
-                "point_x":"20.0",
-                "point_y": "90.0",
-                "next_point_x":"50.0",
-                "next_point_y": "70.0"
+                "type":"palm",
+                "point_x":"0.0",
+                "point_y":"0.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"0.0",
-                "point_y": "25.0",
+                "point_y":"40.0",
                 "next_point_x":"0.0",
-                "next_point_y": "25.0"
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"0.0",
-                "point_y": "55.0",
+                "point_y":"80.0",
                 "next_point_x":"0.0",
-                "next_point_y": "55.0"
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"10.0",
-                "point_y": "5.0",
-                "next_point_x":"10.0",
-                "next_point_y": "5.0"
+                "point_y":"10.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"10.0",
-                "point_y": "10.0",
-                "next_point_x":"10.0",
-                "next_point_y": "10.0"
+                "point_y":"50.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
-                "point_x":"10.0",
-                "point_y": "40.0",
-                "next_point_x":"10.0",
-                "next_point_y": "40.0"
-                },
-            {
-                "type":"palm",
-                "point_x":"20.0",
-                "point_y": "10.0",
-                "next_point_x":"20.0",
-                "next_point_y": "10.0"
+                "point_x":"15.0",
+                "point_y":"5.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"20.0",
-                "point_y": "40.0",
-                "next_point_x":"20.0",
-                "next_point_y": "40.0"
+                "point_y":"40.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"20.0",
-                "point_y": "45.0",
-                "next_point_x":"20.0",
-                "next_point_y": "45.0"
+                "point_y":"70.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
+                },
+            {
+                "type":"palm",
+                "point_x":"20.0",
+                "point_y":"100.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
+                },
+            {
+                "type":"palm",
+                "point_x":"25.0",
+                "point_y":"30.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"30.0",
-                "point_y": "5.0",
-                "next_point_x":"30.0",
-                "next_point_y": "5.0"
+                "point_y":"40.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"30.0",
-                "point_y": "15.0",
-                "next_point_x":"30.0",
-                "next_point_y": "15.0"
+                "point_y":"70.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"30.0",
-                "point_y": "35.0",
-                "next_point_x":"30.0",
-                "next_point_y": "35.0"
+                "point_y":"80.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"40.0",
-                "point_y": "20.0",
-                "next_point_x":"40.0",
-                "next_point_y": "20.0"
+                "point_y":"10.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"45.0",
-                "point_y": "52.5",
-                "next_point_x":"45.0",
-                "next_point_y": "52.5"
+                "point_y":"15.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"50.0",
-                "point_y": "25.0",
-                "next_point_x":"50.0",
-                "next_point_y": "25.0"
+                "point_y":"10.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"50.0",
-                "point_y": "55.0",
-                "next_point_x":"50.0",
-                "next_point_y": "55.0"
+                "point_y":"20.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"50.0",
-                "point_y": "60.0",
-                "next_point_x":"50.0",
-                "next_point_y": "60.0"
+                "point_y":"40.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"60.0",
-                "point_y": "20.0",
-                "next_point_x":"60.0",
-                "next_point_y": "20.0"
+                "point_y":"10.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"60.0",
-                "point_y": "25.0",
-                "next_point_x":"60.0",
-                "next_point_y": "25.0"
+                "point_y":"70.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"60.0",
-                "point_y": "30.0",
-                "next_point_x":"60.0",
-                "next_point_y": "30.0"
-                },
-            {
-                "type":"palm",
-                "point_x":"60.0",
-                "point_y": "55.0",
-                "next_point_x":"60.0",
-                "next_point_y": "55.0"
+                "point_y":"90.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"70.0",
-                "point_y": "5.0",
-                "next_point_x":"70.0",
-                "next_point_y": "5.0"
+                "point_y":"40.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
+                },
+            {
+                "type":"palm",
+                "point_x":"70.0",
+                "point_y":"50.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
+                },
+            {
+                "type":"palm",
+                "point_x":"70.0",
+                "point_y":"80.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
+                },
+            {
+                "type":"palm",
+                "point_x":"70.0",
+                "point_y":"90.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"80.0",
-                "point_y": "5.0",
-                "next_point_x":"80.0",
-                "next_point_y": "5.0"
+                "point_y":"50.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"80.0",
-                "point_y": "10.0",
-                "next_point_x":"80.0",
-                "next_point_y": "10.0"
-                },
-            {
-                "type":"palm",
-                "point_x":"80.0",
-                "point_y": "15.0",
-                "next_point_x":"80.0",
-                "next_point_y": "15.0"
-                },
-            {
-                "type":"palm",
-                "point_x":"80.0",
-                "point_y": "45.0",
-                "next_point_x":"80.0",
-                "next_point_y": "45.0"
+                "point_y":"80.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"90.0",
-                "point_y": "10.0",
-                "next_point_x":"90.0",
-                "next_point_y": "10.0"
+                "point_y":"20.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"90.0",
-                "point_y": "45.0",
-                "next_point_x":"90.0",
-                "next_point_y": "45.0"
+                "point_y":"30.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"90.0",
-                "point_y": "50.0",
-                "next_point_x":"90.0",
-                "next_point_y": "50.0"
+                "point_y":"70.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
+                },
+            {
+                "type":"palm",
+                "point_x":"95.0",
+                "point_y":"60.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
                 },
             {
                 "type":"palm",
                 "point_x":"100.0",
-                "point_y": "30.0",
-                "next_point_x":"100.0",
+                "point_y":"25.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
+                },
+            {
+                "type":"palm",
+                "point_x":"100.0",
+                "point_y":"75.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
+                },
+            {
+                "type":"enemy",
+                "point_x":"50.0",
+                "point_y":"90.0",
+                "next_point_x":"0.0",
+                "next_point_y":"0.0"
+                },
+            {
+                "type":"soldier",
+                "point_x":"20.0",
+                "point_y": "10.0",
+                "next_point_x":"30.0",
                 "next_point_y": "30.0"
+                },
+            {
+                "type":"soldier",
+                "point_x":"40.0",
+                "point_y": "10.0",
+                "next_point_x":"70.0",
+                "next_point_y": "10.0"
+                },
+            {
+                "type":"soldier",
+                "point_x":"90.0",
+                "point_y": "10.0",
+                "next_point_x":"90.0",
+                "next_point_y": "70.0"
+                },
+            {
+                "type":"soldier",
+                "point_x":"80.0",
+                "point_y": "20.0",
+                "next_point_x":"60.0",
+                "next_point_y": "30.0"
+                },
+            {
+                "type":"soldier",
+                "point_x":"40.0",
+                "point_y": "30.0",
+                "next_point_x":"20.0",
+                "next_point_y": "60.0"
                 }
         ]
 }

@@ -182,7 +182,7 @@ public class MathEngine implements Runnable {
     public void tact(long time) {
 
         if (mEnemy != null && MathUtils.distance(mHelicopter.posX(), mHelicopter.posY(), mEnemy.posX(), mEnemy.posY()) <
-                mHelicopter.getMainSprite().getWidthScaled()) {
+                mCriticalDistance) {
             mGameActivity.showResult();
             Log.d("~~~~~ MathEngine: ", "Frags: " + mHelicopter.getPlayerFrag().getFrag());
             Log.d("~~~~~ MathEngine tact: ", "VICTORY!");

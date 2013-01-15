@@ -134,7 +134,7 @@ public class ResourceManager {
                 baseGameActivity, "tank_shadow.png", 88, 0);
 
         mBackGround = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas,
-                baseGameActivity, "background_big.jpg", 0, 0);
+                baseGameActivity, "background.jpg", 0, 0);
 
         mJoystick = BitmapTextureAtlasTextureRegionFactory.createFromAsset(joystickTextureAtlas,
                 baseGameActivity, "joystick.png", 0, 0);

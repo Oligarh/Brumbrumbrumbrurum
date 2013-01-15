@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import android.widget.TextView;
 import com.lugar.steelbird.mathengine.MathEngine;
 
 import org.andengine.engine.camera.Camera;
@@ -28,6 +29,7 @@ public class GameActivity extends BaseGameActivity {
     private FPSCounter mFpsCounter;
 
     private LinearLayout layoutResult;
+    private TextView mCountFrags;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -68,6 +70,7 @@ public class GameActivity extends BaseGameActivity {
         mEngine.registerUpdateHandler(mFpsCounter);
 
         layoutResult = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.layout_result, null);
+        mCountFrags = (TextView) layoutResult.findViewById(R.id.count_frags);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -101,6 +104,7 @@ public class GameActivity extends BaseGameActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                mCountFrags.setText(String.valueOf(mMathEngine.getHelicopter().getPlayerFrag().getFrag()));
                 layoutResult.setVisibility(View.VISIBLE);
             }
         });
@@ -120,5 +124,9 @@ public class GameActivity extends BaseGameActivity {
 
     public FPSCounter getFpsCounter() {
         return mFpsCounter;
+    }
+
+    public void next(View view) {
+        onBackPressed();
     }
 }
