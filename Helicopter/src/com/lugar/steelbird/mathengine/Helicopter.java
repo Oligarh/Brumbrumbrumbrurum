@@ -19,6 +19,8 @@ public class Helicopter extends ArmedMovingObject {
 
     private float mOffsetBullet;
 
+    private PlayerFrag mPlayerFrag;
+
     public Helicopter(PointF point, ResourceManager resourceManager) {
         super(point, resourceManager.getHelicopterBody(), resourceManager);
 
@@ -31,6 +33,8 @@ public class Helicopter extends ArmedMovingObject {
         mMainSprite.attachChild(mPropellerSprite);
         mMainSprite.setScale(Config.SCALE);
         mOffsetBullet = mMainSprite.getWidthScaled() / 9;
+
+        mPlayerFrag = new PlayerFrag();
 
         mTimeRecharge = ConfigObject.RECHARGE_HELICOPTER_BULLET;
     }
@@ -128,5 +132,13 @@ public class Helicopter extends ArmedMovingObject {
 
     enum WeaponType {
         BULLET, BOMB
+    }
+
+    public void addFrag() {
+        mPlayerFrag.addFrag();
+    }
+
+    public PlayerFrag getPlayerFrag() {
+        return mPlayerFrag;
     }
 }

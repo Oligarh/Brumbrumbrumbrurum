@@ -11,6 +11,7 @@ import com.lugar.steelbird.UIHandler;
 import com.lugar.steelbird.mathengine.ammunitions.FlyingObject;
 import com.lugar.steelbird.mathengine.bots.Soldier;
 import com.lugar.steelbird.mathengine.bots.Tank;
+import com.lugar.steelbird.mathengine.statics.Enemy;
 import com.lugar.steelbird.mathengine.statics.StaticObject;
 import com.lugar.steelbird.mathengine.statics.Tree;
 import com.lugar.steelbird.model.Item;
@@ -18,6 +19,7 @@ import com.lugar.steelbird.model.Item;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.Entity;
 import org.andengine.entity.scene.Scene;
+import org.andengine.util.math.MathUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,6 +54,7 @@ public class MathEngine implements Runnable {
     private boolean mPaused = false;
 
     private Helicopter mHelicopter;
+    private Enemy mEnemy;
 
     private GameActivity mGameActivity;
 
@@ -178,8 +181,10 @@ public class MathEngine implements Runnable {
 
     public void tact(long time) {
 
-        if (mCamera.getYMin() < mLength) {
-//          TODO VICTORY!!!
+        if (mEnemy != null && MathUtils.distance(mHelicopter.posX(), mHelicopter.posY(), mEnemy.posX(), mEnemy.posY()) <
+                mHelicopter.getMainSprite().getWidthScaled()) {
+            mGameActivity.showResult();
+            Log.d("~~~~~ MathEngine: ", "Frags: " + mHelicopter.getPlayerFrag().getFrag());
             Log.d("~~~~~ MathEngine tact: ", "VICTORY!");
             mPaused = true;
         }
@@ -224,7 +229,7 @@ public class MathEngine implements Runnable {
                 if (flyingObject.getMainSprite().collidesWith(botObject.getMainSprite())) {
                     botObject.damage(flyingObject.getDamage());
                     if (!botObject.isAlive()) {
-
+                        mHelicopter.addFrag();
 //                      TODO добавить замену спрайта бота на груду горящего метала
 //                        final float x = botObject.posX();
 //                        final float y = botObject.posY();
@@ -276,7 +281,7 @@ public class MathEngine implements Runnable {
         for (Iterator<StaticObject> staticIterator = mStaticObjects.iterator(); staticIterator.hasNext(); ) {
             StaticObject staticObject = staticIterator.next();
             if (staticObject.posY() > mCamera.getYMax() + staticObject.getSprite().getHeightScaled() / 2) {
-                removeTree((Tree)staticObject, staticIterator);
+                removeTree((Tree) staticObject, staticIterator);
             }
         }
         // END tact bots
@@ -305,6 +310,14 @@ public class MathEngine implements Runnable {
                             sceneObject.getPointY() / 100 * mLength), mResourceManager.getPalm(),
                             mResourceManager.getVertexBufferObjectManager()));
                     iterator.remove();
+                } else if (sceneObject.getType().equals(Tags.ENEMY)) {
+                    mEnemy = new Enemy(new PointF(sceneObject.getPointX() / 100 * Config.CAMERA_WIDTH,
+                            sceneObject.getPointY() / 100 * mLength), mResourceManager.getEnemy(),
+                            mResourceManager.getVertexBufferObjectManager());
+                    mEnemy.addShadow(mResourceManager.getEnemyShadow());
+                    mBackgroundLayer.attachChild(mEnemy.getSpriteShadow());
+                    mBackgroundLayer.attachChild(mEnemy.getSprite());
+                    iterator.remove();
                 }
             }
         }
@@ -327,7 +340,7 @@ public class MathEngine implements Runnable {
 
     public synchronized void addSoldier(Soldier object) {
         mArmedMovingObjects.add(object);
-        object.addShadow(mResourceManager.getSoldier());
+        object.addShadow(mResourceManager.getSoldierShadow());
         mBotsLayer.attachChild(object.getSpriteShadow());
         mBotsLayer.attachChild(object.getMainSprite());
     }
@@ -412,20 +425,23 @@ public class MathEngine implements Runnable {
     }
 
     private void updateBackground(long period) {
-
-        for (StaticObject background : mBackground) {
-            if (background.posY() - mRotateBackgroundDistance / 2 > mCamera.getCenterY() + Config.CAMERA_HEIGHT / 2) {
-                background.setPoint(background.posY() - mRotateBackgroundDistance * 3);
+        if (mCamera.getYMin() > mLength) {
+            for (StaticObject background : mBackground) {
+                if (background.posY() - mRotateBackgroundDistance / 2 > mCamera.getCenterY() + Config.CAMERA_HEIGHT / 2) {
+                    background.setPoint(background.posY() - mRotateBackgroundDistance * 3);
+                }
             }
+
+            float distance = (float) period / 1000 * Config.SCENE_SPEED;
+            mCamera.setCenter(mCamera.getCenterX(), mCamera.getCenterY() - distance);
+
+            mHelicopter.setY(mHelicopter.posY() - distance);
         }
-
-        float distance = (float) period / 1000 * Config.SCENE_SPEED;
-        mCamera.setCenter(mCamera.getCenterX(), mCamera.getCenterY() - distance);
-
-        mHelicopter.setY(mHelicopter.posY() - distance);
     }
 
     private interface Tags {
+
+        String ENEMY = "enemy";
 
         String TANK = "tank";
         String SOLDIER = "soldier";

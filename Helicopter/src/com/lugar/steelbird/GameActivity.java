@@ -1,6 +1,10 @@
 package com.lugar.steelbird;
 
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.lugar.steelbird.mathengine.MathEngine;
 
@@ -22,6 +26,8 @@ public class GameActivity extends BaseGameActivity {
     private Camera mCamera;
     private ResourceManager mResourceManager;
     private FPSCounter mFpsCounter;
+
+    private LinearLayout layoutResult;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -61,10 +67,20 @@ public class GameActivity extends BaseGameActivity {
         mFpsCounter = new FPSCounter();
         mEngine.registerUpdateHandler(mFpsCounter);
 
-        System.out.println("##### FILE: " + getIntent().getStringExtra("file"));
+        layoutResult = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.layout_result, null);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                addContentView(layoutResult,  new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT));
+            }
+        });
+
         int resID = getResources().getIdentifier(getIntent().getStringExtra("file"), "raw", getPackageName());
         mMathEngine = new MathEngine(this, resID);
         mMathEngine.start();
+
+
 
         pOnCreateSceneCallback.onCreateSceneFinished(mScene);
     }
@@ -79,6 +95,15 @@ public class GameActivity extends BaseGameActivity {
         super.onBackPressed();
         mMathEngine.stop(true);
         mEngine.stop();
+    }
+
+    public void showResult() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                layoutResult.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     public ResourceManager getResourceManager() {

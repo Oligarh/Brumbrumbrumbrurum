@@ -18,18 +18,38 @@ import java.util.List;
 
 public class Soldier extends ArmedMovingObject {
 
+    private ResourceManager mResourceManager;
+
     private Helicopter mHelicopter;
+    private SoldierType mSoldierType;
 
     public Soldier(PointF point, PointF nextPoint, ResourceManager resourceManager, Helicopter helicopter) {
         super(point, resourceManager.getSoldier(), resourceManager);
+
+        mResourceManager = resourceManager;
 
         mNextPoint = nextPoint;
         mSpeed = 2;
 
         mPointShadow = new PointF(mMainSprite.getWidthScaled() / 20, mMainSprite.getWidthScaled() / 20);
 
-        mHealth = ConfigObject.HEALTH_TANK;
-        mTimeRecharge = ConfigObject.RECHARGE_SOLDIER;
+        mSoldierType = getSoldierType();
+
+        switch (mSoldierType) {
+            case SOLDIER_LEFT:
+            case SOLDIER_RIGHT:
+                mHealth = ConfigObject.HEALTH_SOLDIER;
+                mTimeRecharge = ConfigObject.RECHARGE_SOLDIER_LEFT_RIGHT;
+                break;
+            case SOLDIER_PISTOL:
+                mHealth = ConfigObject.HEALTH_SOLDIER;
+                mTimeRecharge = ConfigObject.RECHARGE_SOLDIER_PISTOL;
+                break;
+            case SOLDIER_GUN:
+                mHealth = ConfigObject.HEALTH_SOLDIER;
+                mTimeRecharge = ConfigObject.RECHARGE_SOLDIER_GUN;
+                break;
+        }
 
         mHelicopter = helicopter;
     }
@@ -38,17 +58,6 @@ public class Soldier extends ArmedMovingObject {
     public void tact(long now, long period) {
         super.tact(now, period);
         updateAngle();
-
-//        if (distance(mPoint.x, mPoint.y, mNextPoint.x, mNextPoint.y) > 10) {
-//            float distance = (float) period / 1000 * mSpeed;
-//            float nextStep = distance(mPoint.x, mPoint.y, mNextPoint.x, mNextPoint.y);
-//            float m = nextStep - distance;
-//            float x = (m * mPoint.x + distance * mNextPoint.x) / nextStep;
-//            float y = (m * mPoint.y + distance * mNextPoint.y) / nextStep;
-//
-//            mPoint.x = x;
-//            mPoint.y = y;
-//        }
 
         mMainSprite.setPosition(mPoint.x - mPointOffset.x, mPoint.y - mPointOffset.y);
         mSpriteShadow.setPosition(mMainSprite.getX() + mPointShadow.x, mMainSprite.getY() + mPointShadow.y);
@@ -90,6 +99,26 @@ public class Soldier extends ArmedMovingObject {
                 textureRegion,
                 mMainSprite.getVertexBufferObjectManager());
         mSpriteShadow.setScale(Config.SCALE);
+    }
+
+    private SoldierType getSoldierType() {
+        if (mMainSprite.getTextureRegion().equals(mResourceManager.getSoldier_1())) {
+            return SoldierType.SOLDIER_LEFT;
+        }
+        if (mMainSprite.getTextureRegion().equals(mResourceManager.getSoldier_2())) {
+            return SoldierType.SOLDIER_RIGHT;
+        }
+        if (mMainSprite.getTextureRegion().equals(mResourceManager.getSoldier_3())) {
+            return SoldierType.SOLDIER_GUN;
+        }
+        if (mMainSprite.getTextureRegion().equals(mResourceManager.getSoldier_4())) {
+            return SoldierType.SOLDIER_PISTOL;
+        }
+        return null;
+    }
+
+    public enum SoldierType {
+        SOLDIER_LEFT, SOLDIER_RIGHT, SOLDIER_PISTOL, SOLDIER_GUN
     }
 
 }

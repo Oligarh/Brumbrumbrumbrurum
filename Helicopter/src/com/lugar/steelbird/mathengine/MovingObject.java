@@ -7,6 +7,8 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import java.util.Random;
+
 public abstract class MovingObject {
 
     protected PointF mPoint;
@@ -20,6 +22,8 @@ public abstract class MovingObject {
     protected int mHealth;
 
     protected boolean mAlive;
+
+    protected Random mRandom = new Random();
 
     public MovingObject(PointF point, TextureRegion mainTextureRegion,
                         VertexBufferObjectManager vertexBufferObjectManager) {

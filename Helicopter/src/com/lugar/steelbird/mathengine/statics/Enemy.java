@@ -8,19 +8,16 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-public class Tree extends StaticObject {
+public class Enemy extends StaticObject {
 
     protected Sprite mSpriteShadow;
     protected float mAngle;
-    protected float mScale;
 
-    public Tree(PointF point, TextureRegion textureRegion, VertexBufferObjectManager vertexBufferObjectManager) {
+    public Enemy(PointF point, TextureRegion textureRegion, VertexBufferObjectManager vertexBufferObjectManager) {
         super(point, textureRegion, vertexBufferObjectManager);
         mAngle = mRandom.nextInt(360);
-        mScale = Config.SCALE - Config.SCALE / 4 + mRandom.nextFloat() * Config.SCALE / 2;
         mSprite.setRotation(mAngle);
-        mSprite.setScale(mScale);
-//        mSprite.setIgnoreUpdate(true);
+        mSprite.setScale(Config.SCALE);
     }
 
     public Sprite getSpriteShadow() {
@@ -33,8 +30,7 @@ public class Tree extends StaticObject {
                 mSprite.getY() + textureRegion.getWidth() * Config.SCALE / 20,
                 textureRegion,
                 mSprite.getVertexBufferObjectManager());
-        mSpriteShadow.setScale(mScale);
+        mSpriteShadow.setScale(Config.SCALE);
         mSpriteShadow.setRotation(mAngle);
-//        mSpriteShadow.setIgnoreUpdate(true);
     }
 }

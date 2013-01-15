@@ -15,6 +15,8 @@ public class StaticObject {
 
     protected Sprite mSprite;
 
+    protected Random mRandom = new Random();
+
     public StaticObject(PointF point, TextureRegion textureRegion,
                         VertexBufferObjectManager vertexBufferObjectManager) {
 

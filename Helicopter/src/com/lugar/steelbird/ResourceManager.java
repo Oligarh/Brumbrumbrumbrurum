@@ -62,8 +62,14 @@ public class ResourceManager {
     private TextureRegion mPalm_12;
     private TextureRegion mPalmShadow_12;
 
-    private TextureRegion mSoldier;
+    private TextureRegion mSoldier_1;
+    private TextureRegion mSoldier_2;
+    private TextureRegion mSoldier_3;
+    private TextureRegion mSoldier_4;
     private TextureRegion mSoldierShadow;
+
+    private TextureRegion mEnemy;
+    private TextureRegion mEnemyShadow;
 
     private TextureRegion mBackGround;
 
@@ -89,9 +95,10 @@ public class ResourceManager {
         BitmapTextureAtlas backgroundTextureAtlas = new BitmapTextureAtlas(textureManager, 1280, 800);
         BitmapTextureAtlas joystickTextureAtlas = new BitmapTextureAtlas(textureManager, 352, 352);
         BitmapTextureAtlas tree1TextureAtlas = new BitmapTextureAtlas(textureManager, 512, 256);
-        BitmapTextureAtlas soldierTextureAtlas = new BitmapTextureAtlas(textureManager, 90, 61);
+        BitmapTextureAtlas soldierTextureAtlas = new BitmapTextureAtlas(textureManager, 132, 50);
         BitmapTextureAtlas palmTextureAtlas = new BitmapTextureAtlas(textureManager, 1200, 1200);
         BitmapTextureAtlas palmShadowTextureAtlas = new BitmapTextureAtlas(textureManager, 1200, 1200);
+        BitmapTextureAtlas enemyShadowTextureAtlas = new BitmapTextureAtlas(textureManager, 490, 190);
 
         mHelicopterBody = BitmapTextureAtlasTextureRegionFactory.createFromAsset(helicopterTextureAtlas,
                 baseGameActivity, "helicopter_body.png", 0, 0);
@@ -138,11 +145,20 @@ public class ResourceManager {
         mTreeShadow1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(tree1TextureAtlas,
                 baseGameActivity, "tree_1_shadow.png", 256, 0);
 
-        mSoldier = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
-                baseGameActivity, "soldier.png", 0, 0);
+        mSoldier_1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
+                baseGameActivity, "soldier_1.png", 0, 0);
+
+        mSoldier_2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
+                baseGameActivity, "soldier_2.png", 26, 0);
+
+        mSoldier_3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
+                baseGameActivity, "soldier_3.png", 52, 0);
+
+        mSoldier_4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
+                baseGameActivity, "soldier_4.png", 78, 0);
 
         mSoldierShadow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
-                baseGameActivity, "soldier_shadow.png", 45, 0);
+                baseGameActivity, "soldier_shadow.png", 104, 0);
 
         mPalm_1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
                 baseGameActivity, "palm_1.png", 0, 0);
@@ -216,6 +232,12 @@ public class ResourceManager {
         mPalmShadow_12 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmShadowTextureAtlas,
                 baseGameActivity, "palm_12_shadow.png", 1000, 200);
 
+        mEnemy = BitmapTextureAtlasTextureRegionFactory.createFromAsset(enemyShadowTextureAtlas,
+                baseGameActivity, "enemy.png", 0, 0);
+
+        mEnemyShadow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(enemyShadowTextureAtlas,
+                baseGameActivity, "enemy_shadow.png", 245, 0);
+
         helicopterTextureAtlas.load();
         bombTextureAtlas.load();
         bulletTextureAtlas.load();
@@ -228,6 +250,7 @@ public class ResourceManager {
         palmTextureAtlas.load();
         palmShadowTextureAtlas.load();
         soldierTextureAtlas.load();
+        enemyShadowTextureAtlas.load();
 
         FontFactory.setAssetBasePath("fonts/");
         this.mFontTexture = new BitmapTextureAtlas(baseGameActivity.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
@@ -306,109 +329,50 @@ public class ResourceManager {
         return mTankShadow;
     }
 
-    public TextureRegion getSoldier() {
-        return mSoldier;
+    public TextureRegion getSoldier_1() {
+        return mSoldier_1;
+    }
+
+    public TextureRegion getSoldier_2() {
+        return mSoldier_2;
+    }
+
+    public TextureRegion getSoldier_3() {
+        return mSoldier_3;
+    }
+
+    public TextureRegion getSoldier_4() {
+        return mSoldier_4;
     }
 
     public TextureRegion getSoldierShadow() {
         return mSoldierShadow;
     }
 
-//    public TextureRegion getPalm_1() {
-//        return mPalm_1;
-//    }
-//
-//    public TextureRegion getPalmShadow_1() {
-//        return mPalmShadow_1;
-//    }
-//
-//    public TextureRegion getPalm_2() {
-//        return mPalm_2;
-//    }
-//
-//    public TextureRegion getPalmShadow_2() {
-//        return mPalmShadow_2;
-//    }
-//
-//    public TextureRegion getPalm_3() {
-//        return mPalm_3;
-//    }
-//
-//    public TextureRegion getPalmShadow_3() {
-//        return mPalmShadow_3;
-//    }
-//
-//    public TextureRegion getPalm_4() {
-//        return mPalm_4;
-//    }
-//
-//    public TextureRegion getPalmShadow_4() {
-//        return mPalmShadow_4;
-//    }
-//
-//    public TextureRegion getPalm_5() {
-//        return mPalm_5;
-//    }
-//
-//    public TextureRegion getPalmShadow_5() {
-//        return mPalmShadow_5;
-//    }
-//
-//    public TextureRegion getPalm_6() {
-//        return mPalm_6;
-//    }
-//
-//    public TextureRegion getPalmShadow_6() {
-//        return mPalmShadow_6;
-//    }
-//
-//    public TextureRegion getPalm_7() {
-//        return mPalm_7;
-//    }
-//
-//    public TextureRegion getPalmShadow_7() {
-//        return mPalmShadow_7;
-//    }
-//
-//    public TextureRegion getPalm_8() {
-//        return mPalm_8;
-//    }
-//
-//    public TextureRegion getPalmShadow_8() {
-//        return mPalmShadow_8;
-//    }
-//
-//    public TextureRegion getPalm_9() {
-//        return mPalm_9;
-//    }
-//
-//    public TextureRegion getPalmShadow_9() {
-//        return mPalmShadow_9;
-//    }
-//
-//    public TextureRegion getPalm_10() {
-//        return mPalm_10;
-//    }
-//
-//    public TextureRegion getPalmShadow_10() {
-//        return mPalmShadow_10;
-//    }
-//
-//    public TextureRegion getPalm_11() {
-//        return mPalm_11;
-//    }
-//
-//    public TextureRegion getPalmShadow_11() {
-//        return mPalmShadow_11;
-//    }
-//
-//    public TextureRegion getPalm_12() {
-//        return mPalm_12;
-//    }
-//
-//    public TextureRegion getPalmShadow_12() {
-//        return mPalmShadow_12;
-//    }
+    public TextureRegion getEnemy() {
+        return mEnemy;
+    }
+
+    public TextureRegion getEnemyShadow() {
+        return mEnemyShadow;
+    }
+
+    public TextureRegion getSoldier() {
+        switch (new Random().nextInt(4)) {
+            case 0:
+                return mSoldier_1;
+            case 1:
+                return mSoldier_2;
+            case 2:
+                return mSoldier_3;
+            case 3:
+                return mSoldier_4;
+            default:
+                return null;
+        }
+    }
+
+
 
     public TextureRegion getPalm() {
         switch (new Random().nextInt(12)) {
