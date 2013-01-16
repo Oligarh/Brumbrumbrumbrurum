@@ -273,6 +273,20 @@
                 "point_y": "30.0",
                 "next_point_x":"20.0",
                 "next_point_y": "60.0"
+                },
+            {
+                "type":"tank",
+                "point_x":"20.0",
+                "point_y": "5.0",
+                "next_point_x":"90.0",
+                "next_point_y": "60.0"
+                },
+            {
+                "type":"tank",
+                "point_x":"80.0",
+                "point_y": "20.0",
+                "next_point_x":"70.0",
+                "next_point_y": "80.0"
                 }
         ]
 }

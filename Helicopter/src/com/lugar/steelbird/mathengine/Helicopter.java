@@ -1,12 +1,13 @@
 package com.lugar.steelbird.mathengine;
 
 import android.graphics.PointF;
+
 import com.lugar.steelbird.Config;
 import com.lugar.steelbird.ResourceManager;
 import com.lugar.steelbird.mathengine.ammunitions.Bullet;
 import com.lugar.steelbird.mathengine.ammunitions.FlyingObject;
+
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.region.TextureRegion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,29 +15,27 @@ import java.util.List;
 public class Helicopter extends ArmedMovingObject {
 
     private WeaponType mWeaponType = WeaponType.BULLET;
-
     private Sprite mPropellerSprite;
-
     private float mOffsetBullet;
-
     private PlayerFrag mPlayerFrag;
 
     public Helicopter(PointF point, ResourceManager resourceManager) {
         super(point, resourceManager.getHelicopterBody(), resourceManager);
 
-        mSpeed = 80;
+        mHealth = ConfigObject.DEFAULT_HEALTH_HELICOPTER;
+        mTimeRecharge = ConfigObject.RECHARGE_HELICOPTER_BULLET;
+        mSpeed = Config.CAMERA_HEIGHT / 4;
+
         mPropellerSprite = new Sprite(0, 0, resourceManager.getHelicopterPropeller(),
                 resourceManager.getVertexBufferObjectManager());
 
-        mPointShadow = new PointF(mMainSprite.getWidthScaled() / 5, mMainSprite.getWidthScaled() / 5);
+        mSprite.attachChild(mPropellerSprite);
+        mSprite.setScale(Config.SCALE);
 
-        mMainSprite.attachChild(mPropellerSprite);
-        mMainSprite.setScale(Config.SCALE);
-        mOffsetBullet = mMainSprite.getWidthScaled() / 9;
+        mPointShadow = new PointF(mSprite.getWidthScaled() / 5, mSprite.getWidthScaled() / 5);
+        mOffsetBullet = mSprite.getWidthScaled() / 9;
 
         mPlayerFrag = new PlayerFrag();
-
-        mTimeRecharge = ConfigObject.RECHARGE_HELICOPTER_BULLET;
     }
 
     public void setWeaponType(WeaponType weaponType) {
@@ -45,23 +44,8 @@ public class Helicopter extends ArmedMovingObject {
 
     @Override
     public void tact(long now, long period) {
+        super.tact(now, period);
         updateAngle();
-
-        if (distance(mPoint.x, mPoint.y, mNextPoint.x, mNextPoint.y) > 10) {
-            float distance = (float) period / 1000 * mSpeed;
-            float nextStep = distance(mPoint.x, mPoint.y, mNextPoint.x, mNextPoint.y);
-            float m = nextStep - distance;
-            float x = (m * mPoint.x + distance * mNextPoint.x) / nextStep;
-            float y = (m * mPoint.y + distance * mNextPoint.y) / nextStep;
-
-            mPoint.x = x;
-            mPoint.y = y;
-        }
-
-        mMainSprite.setPosition(mPoint.x - mPointOffset.x, mPoint.y - mPointOffset.y);
-        mSpriteShadow.setPosition(mMainSprite.getX() + mPointShadow.x, mMainSprite.getY() + mPointShadow.y);
-//        mPoint.x = mMainSprite.getX() + mPointOffset.x;
-//        mPoint.y = mMainSprite.getY() + mPointOffset.y;
     }
 
     @Override
@@ -92,20 +76,12 @@ public class Helicopter extends ArmedMovingObject {
         mAngle = angle;
     }
 
-    private void updateAngle() {
+    protected void updateAngle() {
         if (mPropellerSprite.getRotation() > 360) {
             mPropellerSprite.setRotation(mPropellerSprite.getRotation() % 360);
         }
-
-        if (mMainSprite.getRotation() > 360) {
-            mMainSprite.setRotation(mMainSprite.getRotation() % 360);
-            mSpriteShadow.setRotation(mSpriteShadow.getRotation() % 360);
-        }
-
         mPropellerSprite.setRotation(mPropellerSprite.getRotation() + 20);
-        mMainSprite.setRotation(mAngle);
-        mSpriteShadow.setRotation(mAngle);
-//        mAngle = mMainSprite.getRotation();
+        super.updateAngle();
     }
 
     public Bullet addLeftBullet() {
@@ -120,22 +96,20 @@ public class Helicopter extends ArmedMovingObject {
         return addBullet(sXRight, sYRight, mAngle);
     }
 
-    @Override
-    public void addShadow(TextureRegion textureRegion) {
-        mSpriteShadow = new Sprite(
-                mMainSprite.getX() + mPointShadow.x,
-                mMainSprite.getY() + mPointShadow.y,
-                textureRegion,
-                mMainSprite.getVertexBufferObjectManager());
-        mSpriteShadow.setScale(Config.SCALE);
-    }
-
     enum WeaponType {
         BULLET, BOMB
     }
 
     public void addFrag() {
         mPlayerFrag.addFrag();
+    }
+
+    public void addDamage(float damage) {
+        mPlayerFrag.addDamage(damage);
+    }
+
+    public void carriedDamage(float damage) {
+        mPlayerFrag.addCarried(damage);
     }
 
     public PlayerFrag getPlayerFrag() {

@@ -30,47 +30,23 @@ public class PlayerFrag {
         return mFrag;
     }
 
-    public void setFrag(int frag) {
-        mFrag = frag;
-    }
-
     public int getDead() {
         return mDead;
-    }
-
-    public void setDead(int dead) {
-        mDead = dead;
     }
 
     public int getDamage() {
         return mDamage;
     }
 
-    public void setDamage(int damage) {
-        mDamage = damage;
-    }
-
     public int getCarried() {
         return mCarried;
-    }
-
-    public void setCarried(int carried) {
-        mCarried = carried;
     }
 
     public int getMoney() {
         return mMoney;
     }
 
-    public void setMoney(int money) {
-        mMoney = money;
-    }
-
     public int getExperience() {
         return mExperience;
-    }
-
-    public void setExperience(int experience) {
-        mExperience = experience;
     }
 }

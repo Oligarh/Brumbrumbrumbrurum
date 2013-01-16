@@ -2,15 +2,12 @@ package com.lugar.steelbird.mathengine.bots;
 
 import android.graphics.PointF;
 
-import com.lugar.steelbird.Config;
 import com.lugar.steelbird.ResourceManager;
 import com.lugar.steelbird.mathengine.ArmedMovingObject;
 import com.lugar.steelbird.mathengine.ConfigObject;
 import com.lugar.steelbird.mathengine.Helicopter;
 import com.lugar.steelbird.mathengine.ammunitions.FlyingObject;
 
-import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.util.math.MathUtils;
 
 import java.util.ArrayList;
@@ -23,23 +20,17 @@ public class Soldier extends ArmedMovingObject {
     private Helicopter mHelicopter;
     private SoldierType mSoldierType;
 
-    public Soldier(PointF point, PointF nextPoint, ResourceManager resourceManager, Helicopter helicopter) {
+    public Soldier(PointF point, ResourceManager resourceManager, Helicopter helicopter) {
         super(point, resourceManager.getSoldier(), resourceManager);
 
         mResourceManager = resourceManager;
 
-        mNextPoint = nextPoint;
-        mSpeed = 2;
-
-        mPointShadow = new PointF(mMainSprite.getWidthScaled() / 20, mMainSprite.getWidthScaled() / 20);
-
         mSoldierType = getSoldierType();
 
         switch (mSoldierType) {
-            case SOLDIER_LEFT:
-            case SOLDIER_RIGHT:
+            case SOLDIER:
                 mHealth = ConfigObject.HEALTH_SOLDIER;
-                mTimeRecharge = ConfigObject.RECHARGE_SOLDIER_LEFT_RIGHT;
+                mTimeRecharge = ConfigObject.RECHARGE_SOLDIER;
                 break;
             case SOLDIER_PISTOL:
                 mHealth = ConfigObject.HEALTH_SOLDIER;
@@ -51,6 +42,11 @@ public class Soldier extends ArmedMovingObject {
                 break;
         }
 
+        mNextPoint = point;
+        mSpeed = 0;
+
+        mPointShadow = new PointF(mSprite.getWidthScaled() / 20, mSprite.getWidthScaled() / 20);
+
         mHelicopter = helicopter;
     }
 
@@ -59,16 +55,12 @@ public class Soldier extends ArmedMovingObject {
         super.tact(now, period);
         updateAngle();
 
-        mMainSprite.setPosition(mPoint.x - mPointOffset.x, mPoint.y - mPointOffset.y);
-        mSpriteShadow.setPosition(mMainSprite.getX() + mPointShadow.x, mMainSprite.getY() + mPointShadow.y);
+        mSprite.setPosition(mPoint.x - mPointOffset.x, mPoint.y - mPointOffset.y);
+        mSpriteShadow.setPosition(mSprite.getX() + mPointShadow.x, mSprite.getY() + mPointShadow.y);
     }
 
-    private void updateAngle() {
-
-        if (mMainSprite.getRotation() > 360) {
-            mMainSprite.setRotation(mMainSprite.getRotation() % 360);
-            mSpriteShadow.setRotation(mSpriteShadow.getRotation() % 360);
-        }
+    protected void updateAngle() {
+        super.updateAngle();
 
         float pValueX = mHelicopter.posX();
         float pValueY = mHelicopter.posY();
@@ -78,9 +70,6 @@ public class Soldier extends ArmedMovingObject {
 
         float rotationAngle = (float) Math.atan2(directionY, directionX);
         mAngle = MathUtils.radToDeg(rotationAngle) + 90;
-
-        mMainSprite.setRotation(mAngle);
-        mSpriteShadow.setRotation(mAngle);
     }
 
     @Override
@@ -91,34 +80,20 @@ public class Soldier extends ArmedMovingObject {
         return flyingObjects;
     }
 
-    @Override
-    public void addShadow(TextureRegion textureRegion) {
-        mSpriteShadow = new Sprite(
-                mMainSprite.getX() + mPointShadow.x,
-                mMainSprite.getY() + mPointShadow.y,
-                textureRegion,
-                mMainSprite.getVertexBufferObjectManager());
-        mSpriteShadow.setScale(Config.SCALE);
-    }
-
     private SoldierType getSoldierType() {
-        if (mMainSprite.getTextureRegion().equals(mResourceManager.getSoldier_1())) {
-            return SoldierType.SOLDIER_LEFT;
+        if (mSprite.getTextureRegion().equals(mResourceManager.getSoldier_1())) {
+            return SoldierType.SOLDIER;
         }
-        if (mMainSprite.getTextureRegion().equals(mResourceManager.getSoldier_2())) {
-            return SoldierType.SOLDIER_RIGHT;
-        }
-        if (mMainSprite.getTextureRegion().equals(mResourceManager.getSoldier_3())) {
+        if (mSprite.getTextureRegion().equals(mResourceManager.getSoldier_3())) {
             return SoldierType.SOLDIER_GUN;
         }
-        if (mMainSprite.getTextureRegion().equals(mResourceManager.getSoldier_4())) {
+        if (mSprite.getTextureRegion().equals(mResourceManager.getSoldier_2())) {
             return SoldierType.SOLDIER_PISTOL;
         }
         return null;
     }
 
     public enum SoldierType {
-        SOLDIER_LEFT, SOLDIER_RIGHT, SOLDIER_PISTOL, SOLDIER_GUN
+        SOLDIER, SOLDIER_PISTOL, SOLDIER_GUN
     }
-
 }

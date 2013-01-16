@@ -8,6 +8,7 @@ import com.lugar.steelbird.GameActivity;
 import com.lugar.steelbird.LevelBuilder;
 import com.lugar.steelbird.ResourceManager;
 import com.lugar.steelbird.UIHandler;
+import com.lugar.steelbird.controllers.StatisticController;
 import com.lugar.steelbird.mathengine.ammunitions.FlyingObject;
 import com.lugar.steelbird.mathengine.bots.Soldier;
 import com.lugar.steelbird.mathengine.bots.Tank;
@@ -27,10 +28,7 @@ import java.util.List;
 
 public class MathEngine implements Runnable {
 
-    private static final int LAYER_BACKGROUND = 0;
-    private static final int LAYER_BOTS = LAYER_BACKGROUND + 1;
-    private static final int LAYER_STATIC = LAYER_BOTS + 1;
-    private static final int LAYER_HELICOPTER = LAYER_STATIC + 1;
+    private StatisticController mStatisticController;
 
     private Entity mBackgroundLayer;
     private Entity mBotsLayer;
@@ -73,6 +71,8 @@ public class MathEngine implements Runnable {
         LevelBuilder levelBuilder = new LevelBuilder(gameActivity.getResources(), resLevelID);
         mLength = - levelBuilder.getLength() * Config.CAMERA_HEIGHT;
         mAllObjects = levelBuilder.getSceneObjects();
+
+        mStatisticController = new StatisticController();
 
         Log.d("~~~~~ MathEngine, LevelBuilder getLength = " + mLength, "");
 
@@ -128,7 +128,7 @@ public class MathEngine implements Runnable {
                 mResourceManager.getVertexBufferObjectManager(), gameActivity.getFpsCounter(),
                 mResourceManager.getFont()));
 
-        mCriticalDistance = mHelicopter.getMainSprite().getWidthScaled() * 0.3f;
+        mCriticalDistance = mHelicopter.getSprite().getWidthScaled() * 0.3f;
 
         addHeroObject(mHelicopter);
     }
@@ -183,7 +183,7 @@ public class MathEngine implements Runnable {
 
         if (mEnemy != null && MathUtils.distance(mHelicopter.posX(), mHelicopter.posY(), mEnemy.posX(), mEnemy.posY()) <
                 mCriticalDistance) {
-            mGameActivity.showResult();
+            mGameActivity.showResult(mHelicopter.getPlayerFrag());
             Log.d("~~~~~ MathEngine: ", "Frags: " + mHelicopter.getPlayerFrag().getFrag());
             Log.d("~~~~~ MathEngine tact: ", "VICTORY!");
             mPaused = true;
@@ -205,10 +205,17 @@ public class MathEngine implements Runnable {
         for (Iterator<FlyingObject> flyingIterator = mBotFlyingObjects.iterator(); flyingIterator.hasNext(); ) {
             FlyingObject flyingObject = flyingIterator.next();
             flyingObject.tact(now, time);
-            if (MovingObject.distance(flyingObject.posX(), flyingObject.posY(), mHelicopter.posX(), mHelicopter.posY())
+            if (MathUtils.distance(flyingObject.posX(), flyingObject.posY(), mHelicopter.posX(), mHelicopter.posY())
                     < mCriticalDistance) {
+                if (mHelicopter.getHealth() >= flyingObject.getDamage()) {
+                    notifyGameControllersCarriedDamage(mHelicopter, flyingObject.getDamage());
+                } else {
+                    notifyGameControllersCarriedDamage(mHelicopter, mHelicopter.getHealth());
+                }
                 mHelicopter.damage(flyingObject.getDamage());
+
                 if (!mHelicopter.isAlive()) {
+                    notifyGameControllersAIKillPlayer(mHelicopter);
                     Log.d("~~~~~ MathEngine tact (Helicopter health = " + mHelicopter.getHealth() + ")", "GAME OVER!");
                 }
                 removeFlyingObjectBot(flyingObject, flyingIterator);
@@ -226,25 +233,17 @@ public class MathEngine implements Runnable {
             boolean removed = false;
             for (Iterator<ArmedMovingObject> botIterator = mArmedMovingObjects.iterator(); botIterator.hasNext(); ) {
                 ArmedMovingObject botObject = botIterator.next();
-                if (flyingObject.getMainSprite().collidesWith(botObject.getMainSprite())) {
+                if (botObject.isAlive() && flyingObject.getSprite().collidesWith(botObject.getSprite())) {
+                    if (botObject.getHealth() >= flyingObject.getDamage()) {
+                        notifyGameControllersDamageToOpponents(mHelicopter, flyingObject.getDamage());
+                    } else {
+                        notifyGameControllersDamageToOpponents(mHelicopter, botObject.getHealth());
+                    }
                     botObject.damage(flyingObject.getDamage());
-                    if (!botObject.isAlive()) {
-                        mHelicopter.addFrag();
-//                      TODO добавить замену спрайта бота на груду горящего метала
-//                        final float x = botObject.posX();
-//                        final float y = botObject.posY();
-//
-//                        AnimatedSprite animatedSprite = new AnimatedSprite(
-//                                x - mResourceManager.getExp().getWidth(0) / 2,
-//                                y - mResourceManager.getExp().getHeight(0) / 2,
-//                                mResourceManager.getExp(), mGameActivity.getVertexBufferObjectManager());
-//
-//                        animatedSprite.setScale(Config.SCALE * 2);
-//
-//                        animatedSprite.animate(60, 0);
-//
-//                        mScene.attachChild(animatedSprite);
 
+                    if (!botObject.isAlive()) {
+                        notifyGameControllersPlayerKillAI(mHelicopter);
+//                      TODO добавить замену спрайта бота на груду горящего метала
                         removeArmedMovingObject(botObject, botIterator);
                     }
                     removeFlyingObjectHelicopter(flyingObject, flyingIterator);
@@ -262,17 +261,18 @@ public class MathEngine implements Runnable {
         // tact bots
         for (Iterator<ArmedMovingObject> botIterator = mArmedMovingObjects.iterator(); botIterator.hasNext(); ) {
             ArmedMovingObject botObject = botIterator.next();
-            botObject.tact(now, time);
-
-            if (botObject.canShoot(now, mCamera.getYMin())) {
-                final List<FlyingObject> flyingObjects = botObject.shoot(now);
-                for (FlyingObject flyingObject : flyingObjects) {
-                    addBotFlyingObject(flyingObject);
+            if (botObject.isAlive()) {
+                botObject.tact(now, time);
+                if (botObject.canShoot(now, mCamera.getYMin())) {
+                    final List<FlyingObject> flyingObjects = botObject.shoot(now);
+                    for (FlyingObject flyingObject : flyingObjects) {
+                        addBotFlyingObject(flyingObject);
+                    }
                 }
-            }
 
-            if (botObject.posY() > mCamera.getYMax() + botObject.getMainSprite().getHeightScaled() / 2) {
-                removeArmedMovingObject(botObject, botIterator);
+                if (botObject.posY() > mCamera.getYMax() + botObject.getSprite().getHeightScaled() / 2) {
+                    removeArmedMovingObject(botObject, botIterator);
+                }
             }
         }
         // END tact bots
@@ -301,8 +301,6 @@ public class MathEngine implements Runnable {
                     addSoldier(new Soldier(
                             new PointF(sceneObject.getPointX() / 100 * Config.CAMERA_WIDTH,
                                     sceneObject.getPointY() / 100 * mLength),
-                            new PointF(sceneObject.getNextPointX() / 100 * Config.CAMERA_WIDTH,
-                                    sceneObject.getNextPointY() / 100 * mLength),
                             mResourceManager, mHelicopter));
                     iterator.remove();
                 } else if (sceneObject.getType().equals(Tags.PALM)) {
@@ -328,21 +326,21 @@ public class MathEngine implements Runnable {
     public void addHeroObject(Helicopter object) {
         object.addShadow(mResourceManager.getHelicopterShadow());
         mHelicopterLayer.attachChild(object.getSpriteShadow());
-        mHelicopterLayer.attachChild(object.getMainSprite());
+        mHelicopterLayer.attachChild(object.getSprite());
     }
 
     public synchronized void addArmedMovingObject(ArmedMovingObject object) {
         mArmedMovingObjects.add(object);
         object.addShadow(mResourceManager.getTankShadow());
         mBotsLayer.attachChild(object.getSpriteShadow());
-        mBotsLayer.attachChild(object.getMainSprite());
+        mBotsLayer.attachChild(object.getSprite());
     }
 
     public synchronized void addSoldier(Soldier object) {
         mArmedMovingObjects.add(object);
-        object.addShadow(mResourceManager.getSoldierShadow());
+        object.addShadow(mResourceManager.getSoldierShadow(object.getSprite().getTextureRegion()));
         mBotsLayer.attachChild(object.getSpriteShadow());
-        mBotsLayer.attachChild(object.getMainSprite());
+        mBotsLayer.attachChild(object.getSprite());
     }
 
     public synchronized void addTreeObject(Tree object) {
@@ -356,12 +354,12 @@ public class MathEngine implements Runnable {
         mGameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                object.getMainSprite().clearEntityModifiers();
-                object.getMainSprite().clearUpdateHandlers();
+                object.getSprite().clearEntityModifiers();
+                object.getSprite().clearUpdateHandlers();
                 object.getSpriteShadow().clearEntityModifiers();
                 object.getSpriteShadow().clearUpdateHandlers();
                 mBotsLayer.detachChild(object.getSpriteShadow());
-                mBotsLayer.detachChild(object.getMainSprite());
+                mBotsLayer.detachChild(object.getSprite());
             }
         });
         iterator.remove();
@@ -384,21 +382,21 @@ public class MathEngine implements Runnable {
 
     public synchronized void addHelicopterFlyingObject(FlyingObject object) {
         mHelicopterFlyingObjects.add(object);
-        mFlyingObjectHelicopterLayer.attachChild(object.getMainSprite());
+        mFlyingObjectHelicopterLayer.attachChild(object.getSprite());
     }
 
     public synchronized void addBotFlyingObject(FlyingObject object) {
         mBotFlyingObjects.add(object);
-        mFlyingObjectBotLayer.attachChild(object.getMainSprite());
+        mFlyingObjectBotLayer.attachChild(object.getSprite());
     }
 
     public synchronized void removeFlyingObjectBot(final FlyingObject object, Iterator iterator) {
         mGameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                object.getMainSprite().clearEntityModifiers();
-                object.getMainSprite().clearUpdateHandlers();
-                mFlyingObjectBotLayer.detachChild(object.getMainSprite());
+                object.getSprite().clearEntityModifiers();
+                object.getSprite().clearUpdateHandlers();
+                mFlyingObjectBotLayer.detachChild(object.getSprite());
             }
         });
         iterator.remove();
@@ -408,9 +406,9 @@ public class MathEngine implements Runnable {
         mGameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                object.getMainSprite().clearEntityModifiers();
-                object.getMainSprite().clearUpdateHandlers();
-                mFlyingObjectHelicopterLayer.detachChild(object.getMainSprite());
+                object.getSprite().clearEntityModifiers();
+                object.getSprite().clearUpdateHandlers();
+                mFlyingObjectHelicopterLayer.detachChild(object.getSprite());
             }
         });
         iterator.remove();
@@ -428,7 +426,7 @@ public class MathEngine implements Runnable {
         if (mCamera.getYMin() > mLength) {
             for (StaticObject background : mBackground) {
                 if (background.posY() - mRotateBackgroundDistance / 2 > mCamera.getCenterY() + Config.CAMERA_HEIGHT / 2) {
-                    background.setPoint(background.posY() - mRotateBackgroundDistance * 3);
+                    background.setY(background.posY() - mRotateBackgroundDistance * 3);
                 }
             }
 
@@ -437,6 +435,23 @@ public class MathEngine implements Runnable {
 
             mHelicopter.setY(mHelicopter.posY() - distance);
         }
+    }
+
+    private void notifyGameControllersDamageToOpponents(Helicopter helicopter, float damage) {
+        mStatisticController.damageToOpponents(helicopter, damage);
+    }
+
+    private void notifyGameControllersCarriedDamage(Helicopter helicopter, float damage) {
+        mStatisticController.carriedDamage(helicopter, damage);
+    }
+
+    private void notifyGameControllersAIKillPlayer(Helicopter helicopter) {
+//      TODO write to prefs
+//        mStatisticController.aiKillPlayer(helicopter);
+    }
+
+    private void notifyGameControllersPlayerKillAI(Helicopter helicopter) {
+        mStatisticController.playerKillAI(helicopter);
     }
 
     private interface Tags {

@@ -12,20 +12,13 @@ public class StaticObject {
 
     protected PointF mPoint;
     protected PointF mPointOffset;
-
     protected Sprite mSprite;
-
     protected Random mRandom = new Random();
 
-    public StaticObject(PointF point, TextureRegion textureRegion,
-                        VertexBufferObjectManager vertexBufferObjectManager) {
-
+    public StaticObject(PointF point, TextureRegion textureRegion, VertexBufferObjectManager vertexBufferObjectManager) {
         mPoint = point;
         mPointOffset = new PointF(textureRegion.getWidth() / 2, textureRegion.getHeight() / 2);
-
-        mSprite = new Sprite(mPoint.x - mPointOffset.x, mPoint.y - mPointOffset.y,
-                textureRegion, vertexBufferObjectManager);
-
+        mSprite = new Sprite(mPoint.x - mPointOffset.x, mPoint.y - mPointOffset.y, textureRegion, vertexBufferObjectManager);
         mSprite.setScale(Config.SCALE);
     }
 
@@ -41,7 +34,7 @@ public class StaticObject {
         return mSprite;
     }
 
-    public void setPoint(float newY) {
+    public void setY(float newY) {
         mPoint.y = newY;
         mSprite.setPosition(mPoint.x - mPointOffset.x, mPoint.y - mPointOffset.y);
     }

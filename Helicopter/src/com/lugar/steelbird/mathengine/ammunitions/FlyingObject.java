@@ -5,6 +5,7 @@ import com.lugar.steelbird.Config;
 import com.lugar.steelbird.mathengine.MovingObject;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.util.math.MathUtils;
 
 public class FlyingObject extends MovingObject {
 
@@ -14,8 +15,8 @@ public class FlyingObject extends MovingObject {
             TextureRegion mainTextureRegion, VertexBufferObjectManager vertexBufferObjectManager) {
         super(point, mainTextureRegion, vertexBufferObjectManager);
         mNextPoint = nextPoint;
-        mMainSprite.setRotation(angle);
-        mMainSprite.setScale(Config.SCALE);
+        mSprite.setRotation(angle);
+        mSprite.setScale(Config.SCALE);
     }
 
     public int getDamage() {
@@ -24,16 +25,13 @@ public class FlyingObject extends MovingObject {
 
     @Override
     public void tact(long now, long period) {
-
         float distance = (float) period / 1000 * mSpeed;
-        float nextStep = distance(mPoint.x, mPoint.y, mNextPoint.x, mNextPoint.y);
+        float nextStep = MathUtils.distance(mPoint.x, mPoint.y, mNextPoint.x, mNextPoint.y);
         float m = nextStep - distance;
         float x = (m * mPoint.x + distance * mNextPoint.x) / nextStep;
         float y = (m * mPoint.y + distance * mNextPoint.y) / nextStep;
-
         mPoint.x = x;
         mPoint.y = y;
-
-        mMainSprite.setPosition(mPoint.x - mPointOffset.x, mPoint.y - mPointOffset.y);
+        mSprite.setPosition(mPoint.x - mPointOffset.x, mPoint.y - mPointOffset.y);
     }
 }

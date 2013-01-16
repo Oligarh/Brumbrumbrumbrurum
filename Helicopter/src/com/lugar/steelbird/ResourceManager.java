@@ -65,8 +65,10 @@ public class ResourceManager {
     private TextureRegion mSoldier_1;
     private TextureRegion mSoldier_2;
     private TextureRegion mSoldier_3;
-    private TextureRegion mSoldier_4;
-    private TextureRegion mSoldierShadow;
+
+    private TextureRegion mSoldierShadow_1;
+    private TextureRegion mSoldierShadow_2;
+    private TextureRegion mSoldierShadow_3;
 
     private TextureRegion mEnemy;
     private TextureRegion mEnemyShadow;
@@ -95,7 +97,7 @@ public class ResourceManager {
         BitmapTextureAtlas backgroundTextureAtlas = new BitmapTextureAtlas(textureManager, 1280, 800);
         BitmapTextureAtlas joystickTextureAtlas = new BitmapTextureAtlas(textureManager, 352, 352);
         BitmapTextureAtlas tree1TextureAtlas = new BitmapTextureAtlas(textureManager, 512, 256);
-        BitmapTextureAtlas soldierTextureAtlas = new BitmapTextureAtlas(textureManager, 132, 50);
+        BitmapTextureAtlas soldierTextureAtlas = new BitmapTextureAtlas(textureManager, 132, 100);
         BitmapTextureAtlas palmTextureAtlas = new BitmapTextureAtlas(textureManager, 1200, 1200);
         BitmapTextureAtlas palmShadowTextureAtlas = new BitmapTextureAtlas(textureManager, 1200, 1200);
         BitmapTextureAtlas enemyShadowTextureAtlas = new BitmapTextureAtlas(textureManager, 490, 190);
@@ -149,16 +151,19 @@ public class ResourceManager {
                 baseGameActivity, "soldier_1.png", 0, 0);
 
         mSoldier_2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
-                baseGameActivity, "soldier_2.png", 26, 0);
+                baseGameActivity, "soldier_2.png", 27, 0);
 
         mSoldier_3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
-                baseGameActivity, "soldier_3.png", 52, 0);
+                baseGameActivity, "soldier_3.png", 54, 0);
 
-        mSoldier_4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
-                baseGameActivity, "soldier_4.png", 78, 0);
+        mSoldierShadow_1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
+                baseGameActivity, "soldier_shadow1.png", 0, 38);
 
-        mSoldierShadow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
-                baseGameActivity, "soldier_shadow.png", 104, 0);
+        mSoldierShadow_2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
+                baseGameActivity, "soldier_shadow2.png", 27, 38);
+
+        mSoldierShadow_3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(soldierTextureAtlas,
+                baseGameActivity, "soldier_shadow3.png", 54, 38);
 
         mPalm_1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(palmTextureAtlas,
                 baseGameActivity, "palm_1.png", 0, 0);
@@ -341,12 +346,17 @@ public class ResourceManager {
         return mSoldier_3;
     }
 
-    public TextureRegion getSoldier_4() {
-        return mSoldier_4;
-    }
-
-    public TextureRegion getSoldierShadow() {
-        return mSoldierShadow;
+    public TextureRegion getSoldierShadow(ITextureRegion textureRegion) {
+        if (textureRegion == mSoldier_1) {
+            return mSoldierShadow_1;
+        }
+        if (textureRegion == mSoldier_2) {
+            return mSoldierShadow_2;
+        }
+        if (textureRegion == mSoldier_3) {
+            return mSoldierShadow_3;
+        }
+        return null;
     }
 
     public TextureRegion getEnemy() {
@@ -358,21 +368,17 @@ public class ResourceManager {
     }
 
     public TextureRegion getSoldier() {
-        switch (new Random().nextInt(4)) {
+        switch (new Random().nextInt(3)) {
             case 0:
                 return mSoldier_1;
             case 1:
                 return mSoldier_2;
             case 2:
                 return mSoldier_3;
-            case 3:
-                return mSoldier_4;
             default:
                 return null;
         }
     }
-
-
 
     public TextureRegion getPalm() {
         switch (new Random().nextInt(12)) {

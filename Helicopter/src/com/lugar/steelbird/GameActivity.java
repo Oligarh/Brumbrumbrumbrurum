@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 
 import android.widget.TextView;
 import com.lugar.steelbird.mathengine.MathEngine;
+import com.lugar.steelbird.mathengine.PlayerFrag;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
@@ -30,6 +31,10 @@ public class GameActivity extends BaseGameActivity {
 
     private LinearLayout layoutResult;
     private TextView mCountFrags;
+    private TextView mDamage;
+    private TextView mCarried;
+    private TextView mMoney;
+    private TextView mExperience;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -38,7 +43,7 @@ public class GameActivity extends BaseGameActivity {
         Config.CAMERA_WIDTH = displaymetrics.widthPixels;
         Config.CAMERA_HEIGHT = displaymetrics.heightPixels;
         Config.SCALE = (float) displaymetrics.widthPixels / Config.ETALON_WIDTH;
-
+        Config.SCENE_SPEED = displaymetrics.heightPixels / 30;
         mCamera = new Camera(0, 0, Config.CAMERA_WIDTH, Config.CAMERA_HEIGHT);
 
         final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED,
@@ -71,6 +76,10 @@ public class GameActivity extends BaseGameActivity {
 
         layoutResult = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.layout_result, null);
         mCountFrags = (TextView) layoutResult.findViewById(R.id.count_frags);
+        mDamage = (TextView) layoutResult.findViewById(R.id.count_damage);
+        mCarried = (TextView) layoutResult.findViewById(R.id.count_carried);
+        mMoney = (TextView) layoutResult.findViewById(R.id.money);
+        mExperience = (TextView) layoutResult.findViewById(R.id.experience);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -100,11 +109,15 @@ public class GameActivity extends BaseGameActivity {
         mEngine.stop();
     }
 
-    public void showResult() {
+    public void showResult(final PlayerFrag playerFrag) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mCountFrags.setText(String.valueOf(mMathEngine.getHelicopter().getPlayerFrag().getFrag()));
+                mCountFrags.setText(String.valueOf(playerFrag.getFrag()));
+                mDamage.setText(String.valueOf(playerFrag.getDamage()));
+                mCarried.setText(String.valueOf(playerFrag.getCarried()));
+                mMoney.setText(String.valueOf(playerFrag.getMoney()));
+                mExperience.setText(String.valueOf(playerFrag.getExperience()));
                 layoutResult.setVisibility(View.VISIBLE);
             }
         });
