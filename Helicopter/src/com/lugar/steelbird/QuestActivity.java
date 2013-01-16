@@ -39,6 +39,8 @@ public class QuestActivity extends Activity {
     private LinearLayout layoutQuests;
     private LinearLayout layoutSubLocation;
 
+    private int mLastOpenLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +56,20 @@ public class QuestActivity extends Activity {
 
         List<ChipOnMap> chips = readLocations();
 
-        for (ChipOnMap chipOnMap : chips) {
+        for (int i = 0; i < chips.size(); i++) {
+
+            final ChipOnMap chipOnMap = chips.get(i);
+            final String[] subLocations = getSubLocations(chipOnMap.getID());
+
+            final int lastOpened = Prefs.getIntProperty(this, chipOnMap.getLocationID());
+            if (lastOpened == subLocations.length) {
+                if (i < chips.size() - 1) {
+                    mLastOpenLocation = chips.get(i + 1).getID();
+                } else {
+                    mLastOpenLocation = chipOnMap.getID();
+                }
+            }
+
             Bitmap chipBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.chip);
             Bitmap chipSelectedBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.chip_selected);
 
@@ -71,7 +86,6 @@ public class QuestActivity extends Activity {
             textView.setText(chipOnMap.getTitle());
             textView.setTextSize(heightDisplay / 30);
 
-            final String[] subLocations = getSubLocations(chipOnMap.getID());
             item.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -80,7 +94,7 @@ public class QuestActivity extends Activity {
                     }
                     if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                         imageView.setPressed(false);
-                        openSubLocations(subLocations);
+                        openSubLocations(subLocations, lastOpened, chipOnMap.getID() <= mLastOpenLocation);
                     }
                     return true;
                 }
@@ -104,7 +118,7 @@ public class QuestActivity extends Activity {
         }
     }
 
-    private void openSubLocations(String[] subLocations) {
+    private void openSubLocations(String[] subLocations, int lastOpened, boolean opened) {
         relativeLayout.setVisibility(View.GONE);
         layoutSubLocation.setVisibility(View.VISIBLE);
         LinearLayout inflate = null;
@@ -112,11 +126,11 @@ public class QuestActivity extends Activity {
             if (i % 5 == 0) {
                 inflate = (LinearLayout) getLayoutInflater().inflate(R.layout.item_location, layoutQuests, false);
                 final View item = getLayoutInflater().inflate(R.layout.button_location, inflate, false);
-                addButtonToLayer(item, subLocations[i], i, true, subLocations.length);
+                addButtonToLayer(item, subLocations[i], i, opened, lastOpened);
                 addItemToInflate(inflate, item, true);
             } else {
                 final View item = getLayoutInflater().inflate(R.layout.button_location, inflate, false);
-                addButtonToLayer(item, subLocations[i], i, true, subLocations.length);
+                addButtonToLayer(item, subLocations[i], i, opened, lastOpened);
                 addItemToInflate(inflate, item, false);
             }
         }
@@ -195,6 +209,7 @@ public class QuestActivity extends Activity {
                 final JSONObject itemObj = jsonArray.getJSONObject(i);
                 final ChipOnMap chipOnMap = new ChipOnMap();
                 chipOnMap.setID(itemObj.getInt(Tags.ID));
+                chipOnMap.setLocationID(getString(itemObj.getString(Tags.LOCATION_ID)));
                 chipOnMap.setTitle(getString(itemObj.getString(Tags.TITLE)));
                 chipOnMap.setX(itemObj.getInt(Tags.X));
                 chipOnMap.setY(itemObj.getInt(Tags.Y));
@@ -227,6 +242,7 @@ public class QuestActivity extends Activity {
 
     private interface Tags {
         String ID = "id";
+        String LOCATION_ID = "location_id";
         String TITLE = "title";
         String X = "x";
         String Y = "y";

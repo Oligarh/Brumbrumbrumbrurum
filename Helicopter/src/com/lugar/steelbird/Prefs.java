@@ -19,6 +19,11 @@ public class Prefs {
         return value;
     }
 
+    public static int getIntProperty(Context context, String key) {
+        final int value = getPrefs(context).getInt(key, 0);
+        return value;
+    }
+
     public static boolean getBooleanProperty(Context context, int resId) {
         final String key = context.getString(resId);
         return getPrefs(context).getBoolean(key, false);

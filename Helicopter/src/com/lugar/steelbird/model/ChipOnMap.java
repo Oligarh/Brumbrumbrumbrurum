@@ -9,6 +9,7 @@ public class ChipOnMap implements Parcelable {
     private int mY;
     private String mTitle;
     private int mID;
+    private String mLocationID;
 
     public ChipOnMap() {
     }
@@ -18,13 +19,15 @@ public class ChipOnMap implements Parcelable {
         mY = in.readInt();
         mTitle = in.readString();
         mID = in.readInt();
+        mLocationID = in.readString();
     }
 
-    public ChipOnMap(int mX, int mY, String mTitle, int mID) {
+    public ChipOnMap(int mX, int mY, String mTitle, int mID, String mLocationID) {
         this.mX = mX;
         this.mY = mY;
         this.mTitle = mTitle;
         this.mID = mID;
+        this.mLocationID = mLocationID;
     }
 
     @Override
@@ -38,6 +41,7 @@ public class ChipOnMap implements Parcelable {
         parcel.writeInt(mY);
         parcel.writeString(mTitle);
         parcel.writeInt(mID);
+        parcel.writeString(mLocationID);
     }
 
     public static final Parcelable.Creator<ChipOnMap> CREATOR = new Parcelable.Creator<ChipOnMap>() {
@@ -83,5 +87,13 @@ public class ChipOnMap implements Parcelable {
 
     public void setID(int ID) {
         mID = ID;
+    }
+
+    public String getLocationID() {
+        return mLocationID;
+    }
+
+    public void setLocationID(String locationID) {
+        mLocationID = locationID;
     }
 }

@@ -1,6 +1,7 @@
 [
     {
         "id":"0",
+        "location_id":"location_1",
         "title":"Location",
         "x":"20",
         "y":"20"
