@@ -6,7 +6,21 @@
         <item>level_1</item>
         <item>level_1</item>
         <item>level_1</item>
+        <item>level_1</item>
+        <item>level_1</item>
+        <item>level_1</item>
+        <item>level_1</item>
+        <item>level_1</item>
+        <item>level_1</item>
     </string-array>
 
+    <string-array name="Location1">
+        <item>level_1</item>
+        <item>level_1</item>
+        <item>level_1</item>
+        <item>level_1</item>
+        <item>level_1</item>
+        <item>level_1</item>
+    </string-array>
 
 </resources>

@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="0dp"
               android:layout_height="match_parent"
-              android:layout_weight="1"
-              android:weightSum="7"
-              android:orientation="vertical">
+              android:layout_weight="1">
 
     <Button
         android:id="@+id/buttonLocation"
         android:layout_width="match_parent"
         android:textStyle="bold"
+        android:textSize="32dp"
         android:typeface="serif"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_sublocation_selector"/>
 
-</LinearLayout>
+    <ImageView
+            android:id="@+id/top_secret"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:src="@drawable/top_secret"
+            android:adjustViewBounds="true"/>
+
+</FrameLayout>
 
 

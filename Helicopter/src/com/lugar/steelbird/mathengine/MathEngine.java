@@ -3,11 +3,7 @@ package com.lugar.steelbird.mathengine;
 import android.graphics.PointF;
 import android.util.Log;
 
-import com.lugar.steelbird.Config;
-import com.lugar.steelbird.GameActivity;
-import com.lugar.steelbird.LevelBuilder;
-import com.lugar.steelbird.ResourceManager;
-import com.lugar.steelbird.UIHandler;
+import com.lugar.steelbird.*;
 import com.lugar.steelbird.controllers.StatisticController;
 import com.lugar.steelbird.mathengine.ammunitions.FlyingObject;
 import com.lugar.steelbird.mathengine.bots.Soldier;
@@ -65,8 +61,11 @@ public class MathEngine implements Runnable {
     private final List<Item> mAllObjects;
 
     private int mLength;
+    private String mLocationID;
 
-    public MathEngine(GameActivity gameActivity, int resLevelID) {
+    public MathEngine(GameActivity gameActivity, int resLevelID, String locationID) {
+
+        mLocationID = locationID;
 
         LevelBuilder levelBuilder = new LevelBuilder(gameActivity.getResources(), resLevelID);
         mLength = - levelBuilder.getLength() * Config.CAMERA_HEIGHT;
@@ -184,6 +183,8 @@ public class MathEngine implements Runnable {
         if (mEnemy != null && MathUtils.distance(mHelicopter.posX(), mHelicopter.posY(), mEnemy.posX(), mEnemy.posY()) <
                 mCriticalDistance) {
             mGameActivity.showResult(mHelicopter.getPlayerFrag());
+            int countOpened = Prefs.getIntProperty(mGameActivity, mLocationID);
+            Prefs.setIntProperty(mGameActivity, mLocationID, countOpened + 1);
             Log.d("~~~~~ MathEngine: ", "Frags: " + mHelicopter.getPlayerFrag().getFrag());
             Log.d("~~~~~ MathEngine tact: ", "VICTORY!");
             mPaused = true;
@@ -248,6 +249,7 @@ public class MathEngine implements Runnable {
                     }
                     removeFlyingObjectHelicopter(flyingObject, flyingIterator);
                     removed = true;
+                    break;
                 }
             }
 

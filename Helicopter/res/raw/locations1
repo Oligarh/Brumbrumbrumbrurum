@@ -5,5 +5,12 @@
         "title":"Location",
         "x":"20",
         "y":"20"
+    },
+    {
+        "id":"1",
+        "location_id":"location_2",
+        "title":"Золото Аляски",
+        "x":"2",
+        "y":"10"
     }
 ]

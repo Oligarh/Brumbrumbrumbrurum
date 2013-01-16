@@ -53,8 +53,17 @@ public class QuestActivity extends Activity {
         relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayoutMap);
         layoutQuests = (LinearLayout) findViewById(R.id.layoutLocationID);
         layoutSubLocation = (LinearLayout) findViewById(R.id.layoutSubLocation);
+    }
 
-        List<ChipOnMap> chips = readLocations();
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        layoutSubLocation.setVisibility(View.GONE);
+        relativeLayout.setVisibility(View.VISIBLE);
+        layoutQuests.removeAllViewsInLayout();
+
+        final List<ChipOnMap> chips = readLocations();
 
         for (int i = 0; i < chips.size(); i++) {
 
@@ -94,7 +103,7 @@ public class QuestActivity extends Activity {
                     }
                     if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                         imageView.setPressed(false);
-                        openSubLocations(subLocations, lastOpened, chipOnMap.getID() <= mLastOpenLocation);
+                        openSubLocations(subLocations, lastOpened, chipOnMap.getID() <= mLastOpenLocation, chipOnMap.getLocationID());
                     }
                     return true;
                 }
@@ -115,10 +124,11 @@ public class QuestActivity extends Activity {
         } else {
             layoutSubLocation.setVisibility(View.GONE);
             relativeLayout.setVisibility(View.VISIBLE);
+            layoutQuests.removeAllViewsInLayout();
         }
     }
 
-    private void openSubLocations(String[] subLocations, int lastOpened, boolean opened) {
+    private void openSubLocations(String[] subLocations, int lastOpened, boolean opened, String locationID) {
         relativeLayout.setVisibility(View.GONE);
         layoutSubLocation.setVisibility(View.VISIBLE);
         LinearLayout inflate = null;
@@ -126,11 +136,11 @@ public class QuestActivity extends Activity {
             if (i % 5 == 0) {
                 inflate = (LinearLayout) getLayoutInflater().inflate(R.layout.item_location, layoutQuests, false);
                 final View item = getLayoutInflater().inflate(R.layout.button_location, inflate, false);
-                addButtonToLayer(item, subLocations[i], i, opened, lastOpened);
+                addButtonToLayer(item, subLocations[i], i, opened, lastOpened, locationID);
                 addItemToInflate(inflate, item, true);
             } else {
                 final View item = getLayoutInflater().inflate(R.layout.button_location, inflate, false);
-                addButtonToLayer(item, subLocations[i], i, opened, lastOpened);
+                addButtonToLayer(item, subLocations[i], i, opened, lastOpened, locationID);
                 addItemToInflate(inflate, item, false);
             }
         }
@@ -140,12 +150,16 @@ public class QuestActivity extends Activity {
         switch (id) {
             case 0:
                 return getResources().getStringArray(R.array.Tutorial);
+            case 1:
+                return getResources().getStringArray(R.array.Location1);
         }
         return null;
     }
 
-    private View addButtonToLayer(View item, final String jsonFile, final int i, boolean open, final int finished) {
+    private View addButtonToLayer(View item, final String jsonFile, final int i, boolean open, final int finished,
+                                  final String locationID) {
         final Button button = (Button) item.findViewById(R.id.buttonLocation);
+        final ImageView topSecret = (ImageView) item.findViewById(R.id.top_secret);
 
         if (open) {
             runOnUiThread(new Runnable() {
@@ -155,7 +169,8 @@ public class QuestActivity extends Activity {
                     if (finished >= i) {
                         button.setText(String.valueOf(i + 1));
                     } else {
-                        button.setBackgroundResource(R.drawable.chip_1_selected);
+                        button.setBackgroundResource(R.drawable.button_sublocation);
+                        topSecret.setVisibility(View.VISIBLE);
                     }
                 }
             });
@@ -165,6 +180,7 @@ public class QuestActivity extends Activity {
                 public void onClick(View view) {
                     Intent intent = new Intent(QuestActivity.this, GameActivity.class);
                     intent.putExtra("file", jsonFile);
+                    intent.putExtra("locationID", locationID);
                     startActivity(intent);
                 }
             });
@@ -173,7 +189,8 @@ public class QuestActivity extends Activity {
                 @Override
                 public void run() {
                     button.setEnabled(false);
-                    button.setBackgroundResource(R.drawable.chip_1_selected);
+                    button.setBackgroundResource(R.drawable.button_sublocation);
+                    topSecret.setVisibility(View.VISIBLE);
                 }
             });
         }

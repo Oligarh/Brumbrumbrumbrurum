@@ -1,5 +1,6 @@
 package com.lugar.steelbird;
 
+import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,8 +89,10 @@ public class GameActivity extends BaseGameActivity {
             }
         });
 
-        int resID = getResources().getIdentifier(getIntent().getStringExtra("file"), "raw", getPackageName());
-        mMathEngine = new MathEngine(this, resID);
+        Intent intent = getIntent();
+        int resID = getResources().getIdentifier(intent.getStringExtra("file"), "raw", getPackageName());
+        String locationID = intent.getStringExtra("locationID");
+        mMathEngine = new MathEngine(this, resID, locationID);
         mMathEngine.start();
 
 

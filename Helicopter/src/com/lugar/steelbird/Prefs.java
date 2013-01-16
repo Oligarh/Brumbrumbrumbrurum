@@ -35,9 +35,19 @@ public class Prefs {
         prefs.edit().putString(key, value).commit();
     }
 
+    public static void setStringProperty(Context context, String key, String value) {
+        final SharedPreferences prefs = getPrefs(context);
+        prefs.edit().putString(key, value).commit();
+    }
+
     public static void setIntProperty(Context context, int resId, int value) {
         final SharedPreferences prefs = getPrefs(context);
         final String key = context.getString(resId);
+        prefs.edit().putInt(key, value).commit();
+    }
+
+    public static void setIntProperty(Context context, String key, int value) {
+        final SharedPreferences prefs = getPrefs(context);
         prefs.edit().putInt(key, value).commit();
     }
 
