@@ -3,12 +3,12 @@ package com.lugar.steelbird.mathengine.bots;
 import android.graphics.PointF;
 
 import com.lugar.steelbird.Config;
-import com.lugar.steelbird.ResourceManager;
 import com.lugar.steelbird.mathengine.ArmedMovingObject;
 import com.lugar.steelbird.mathengine.ConfigObject;
 import com.lugar.steelbird.mathengine.Helicopter;
 import com.lugar.steelbird.mathengine.ammunitions.FlyingObject;
 
+import com.lugar.steelbird.resources.ResourceManager;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.util.math.MathUtils;
 

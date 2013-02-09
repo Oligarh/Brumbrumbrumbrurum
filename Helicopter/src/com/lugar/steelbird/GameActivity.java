@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import android.widget.TextView;
+import com.lugar.steelbird.helicopter.HelicopterType;
 import com.lugar.steelbird.mathengine.MathEngine;
 import com.lugar.steelbird.mathengine.PlayerFrag;
 
+import com.lugar.steelbird.resources.ResourceManager;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -59,7 +61,7 @@ public class GameActivity extends BaseGameActivity {
 
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
-        mResourceManager = new ResourceManager(this);
+        mResourceManager = new ResourceManager(this, LocationType.JUNGLE, HelicopterType.LIGHT);
 
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }

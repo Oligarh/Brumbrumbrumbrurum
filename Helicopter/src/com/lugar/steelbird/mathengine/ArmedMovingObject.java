@@ -3,11 +3,11 @@ package com.lugar.steelbird.mathengine;
 import android.graphics.PointF;
 
 import com.lugar.steelbird.Config;
-import com.lugar.steelbird.ResourceManager;
 import com.lugar.steelbird.mathengine.ammunitions.Bomb;
 import com.lugar.steelbird.mathengine.ammunitions.Bullet;
 import com.lugar.steelbird.mathengine.ammunitions.FlyingObject;
 
+import com.lugar.steelbird.resources.ResourceManager;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.util.math.MathUtils;

@@ -13,6 +13,7 @@ import com.lugar.steelbird.mathengine.statics.StaticObject;
 import com.lugar.steelbird.mathengine.statics.Tree;
 import com.lugar.steelbird.model.Item;
 
+import com.lugar.steelbird.resources.ResourceManager;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.Entity;
 import org.andengine.entity.scene.Scene;
@@ -307,7 +308,7 @@ public class MathEngine implements Runnable {
                     iterator.remove();
                 } else if (sceneObject.getType().equals(Tags.PALM)) {
                     addTreeObject(new Tree(new PointF(sceneObject.getPointX() / 100 * Config.CAMERA_WIDTH,
-                            sceneObject.getPointY() / 100 * mLength), mResourceManager.getPalm(),
+                            sceneObject.getPointY() / 100 * mLength), mResourceManager.getTree(),
                             mResourceManager.getVertexBufferObjectManager()));
                     iterator.remove();
                 } else if (sceneObject.getType().equals(Tags.ENEMY)) {
@@ -347,7 +348,7 @@ public class MathEngine implements Runnable {
 
     public synchronized void addTreeObject(Tree object) {
         mStaticObjects.add(object);
-        object.addShadow(mResourceManager.getPalmShadow(object.getSprite().getTextureRegion()));
+        object.addShadow(mResourceManager.getTreeShadow(object.getSprite().getTextureRegion()));
         mStaticLayer.attachChild(object.getSpriteShadow());
         mStaticLayer.attachChild(object.getSprite());
     }
